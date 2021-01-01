@@ -7,11 +7,6 @@ $.initialize = function (course) {
     $[course.code] = course;
     $.grades[course.code] = {};
 
-    // Sort item grades from low to high
-    course.gradingItemGrades.sort(function (first, second) {
-        return first.worth - second.worth;
-    });
-
     // Intialize count total
     if (!course.gradingCountTotal == undefined) {
         course.gradingCountTotal = false;
@@ -34,6 +29,14 @@ $.initialize = function (course) {
     let ruleIndex = 0;
     course.gradingRules.forEach((rule) => {
         rule.index = ruleIndex++;
+    });
+
+    // Intialize F grade
+    course.gradingRules.push({ grade: "F", total: 0 });
+
+    // Sort item grades from low to high
+    course.gradingItemGrades.sort(function (first, second) {
+        return first.worth - second.worth;
     });
 
 
