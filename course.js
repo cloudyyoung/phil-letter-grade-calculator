@@ -58,7 +58,6 @@ $.PHIL379 = {
         { grade: "A+", "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 9 }, "challenge-problem": { "M": 3, "E": 3 }, "group-work": { "submit": 5 } },
         { grade: "A", "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 5 } },
         { grade: "A-", "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } },
-        { grade: "A-", "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } },
 
         { grade: "B+", "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 4 } },
         { grade: "B+", "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } },
