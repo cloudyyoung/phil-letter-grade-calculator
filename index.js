@@ -37,6 +37,8 @@ $.initialize = function (course) {
     });
 
 
+
+    // Build course html
     let courseHtml = `
         <div class="course ${course.code}" course="${course.code}">
             <section class="section">
@@ -44,6 +46,7 @@ $.initialize = function (course) {
                     <div class="columns components">
     `;
 
+    // Build form
     course.components.forEach((component) => {
         $.grades[course.code][component.code] = {};
 
@@ -117,12 +120,14 @@ $.initialize = function (course) {
             </section>
     `;
 
+
+    // Build letter grade table header
     let tableHead = ``;
     course.components.forEach((component) => {
         tableHead += `<th>${component.title}</th>`;
     });
 
-
+    // Build letter grade table body
     let tableBody = ``;
     course.gradingRules.forEach((rule) => {
         tableBody += `<tr class="rule-item rule-${rule.index}">`;
@@ -235,11 +240,13 @@ $.initialize = function (course) {
 
 $(document).ready(() => {
     $(".choices-grade .choice").click(function (e) {
+        // Read data from DOM
         let course = $(this).closest(".course").attr("course");
         let gradingItemType = $(this).closest(".grading-item").attr("itemType");
         let gradingItemNo = $(this).closest(".grading-item").attr("itemNo");
         let grade = $(this).attr("grade");
 
+        // Change state of item grade choice
         if ($(this).hasClass("checked")) {
             $(this).removeClass("checked");
             $(this).closest(".grading-item").removeClass("active");
@@ -253,6 +260,7 @@ $(document).ready(() => {
 
         $.letterGrades.calculate($[course]);
 
+        // Update letter grade table highlights
         $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected").removeClass("is-locked");
         if ($.grades[course].letterGradeRuleIndex == $.grades[course].tentativeLetterGradeRuleIndex) {
             $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].letterGradeRuleIndex}`).addClass("is-selected is-locked");
@@ -261,6 +269,7 @@ $(document).ready(() => {
             $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].tentativeLetterGradeRuleIndex}`).addClass("is-selected");
         }
 
+        // Upate the grades on letter grade cards
         $(".card.tentative-letter-grade .grade").text($.grades[course].tentativeLetterGrade);
         $(".card.letter-grade .grade").text($.grades[course].letterGrade);
     });
