@@ -25,14 +25,14 @@ $.initialize = function (course) {
     });
     console.log(course.gradingItemGradesDictionary);
 
+    // Intialize F grade
+    course.gradingRules.push({ grade: "F", total: 0 });
+
     // Initialize rule index
     let ruleIndex = 0;
     course.gradingRules.forEach((rule) => {
         rule.index = ruleIndex++;
     });
-
-    // Intialize F grade
-    course.gradingRules.push({ grade: "F", total: 0 });
 
     // Sort item grades from low to high
     course.gradingItemGrades.sort(function (first, second) {
@@ -133,7 +133,7 @@ $.initialize = function (course) {
     // Build letter grade table body
     let tableBody = ``;
     course.gradingRules.forEach((rule) => {
-        tableBody += `<tr class="rule-item rule-${rule.index}">`;
+        tableBody += `<tr class="rule-item rule-${rule.index} grade-${rule.grade}">`;
         tableBody += `<th>${rule.grade}</th>`;
 
         course.components.forEach((component) => {
@@ -276,4 +276,9 @@ $(document).ready(() => {
         $(".card.tentative-letter-grade .grade").text($.grades[course].tentativeLetterGrade);
         $(".card.letter-grade .grade").text($.grades[course].letterGrade);
     });
+
+    // Default select A+ and F
+    $(`.letter-grade.table .rule-item.rule-0`).addClass("is-selected");
+    $(`.letter-grade.table .rule-item.grade-F`).addClass("is-selected");
+
 });
