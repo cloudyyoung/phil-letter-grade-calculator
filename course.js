@@ -26,6 +26,7 @@ $.PHIL279 = {
         { grade: "C-", "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 }, total: 22 },
         { grade: "D+", "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 }, total: 20 },
         { grade: "D", "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 }, total: 18 },
+        { grade: "F", total: 0 }
     ]
 };
 $.initialize($.PHIL279);
@@ -71,6 +72,8 @@ $.PHIL379 = {
 
         { grade: "D+", "quiz": { "complete": 5 }, "weekly-test": { "pass": 5 }, "basic-problem": { "M": 6 } },
         { grade: "D", "quiz": { "complete": 5 }, "weekly-test": { "pass": 5 }, "basic-problem": { "R": 5, "M": 3 } },
+
+        { grade: "F" }
     ]
 };
 $.initialize($.PHIL379);

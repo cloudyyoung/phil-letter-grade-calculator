@@ -109,13 +109,21 @@ $.letterGrades = {
             // If match the current grading rule in general
             if (match) {
                 let letterGrade = this.max($.grades[course.code].letterGrade, rule.grade);
-                $.grades[course.code].letterGrade = letterGrade;
+
+                if (letterGrade == rule.grade) {
+                    $.grades[course.code].letterGrade = letterGrade;
+                    $.grades[course.code].letterGradeRuleIndex = rule.index;
+                }
             }
 
             // If match the current grading rule in general
             if (matchTentative) {
                 let letterGrade = this.max($.grades[course.code].tentativeLetterGrade, rule.grade);
-                $.grades[course.code].tentativeLetterGrade = letterGrade;
+
+                if (letterGrade == rule.grade) {
+                    $.grades[course.code].tentativeLetterGrade = letterGrade;
+                    $.grades[course.code].tentativeLetterGradeRuleIndex = rule.index;
+                }
             }
         });
 

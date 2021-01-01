@@ -30,6 +30,12 @@ $.initialize = function (course) {
     });
     console.log(course.gradingItemGradesDictionary);
 
+    // Initialize rule index
+    let ruleIndex = 0;
+    course.gradingRules.forEach((rule) => {
+        rule.index = ruleIndex++;
+    });
+
 
     let courseHtml = `
         <div class="course ${course.code}" course="${course.code}">
@@ -119,7 +125,7 @@ $.initialize = function (course) {
 
     let tableBody = ``;
     course.gradingRules.forEach((rule) => {
-        tableBody += `<tr class="rule-item">`;
+        tableBody += `<tr class="rule-item rule-${rule.index}">`;
         tableBody += `<th>${rule.grade}</th>`;
 
         course.components.forEach((component) => {
@@ -197,5 +203,9 @@ $(document).ready(() => {
         }
 
         $.letterGrades.calculate($[course]);
+
+        $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected");
+        $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].letterGradeRuleIndex}`).addClass("is-selected");
+        $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].tentativeLetterGradeRuleIndex}`).addClass("is-selected");
     });
 });
