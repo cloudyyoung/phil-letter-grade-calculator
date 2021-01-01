@@ -1,0 +1,75 @@
+html, body{
+    font-family: 'Roboto', sans-serif !important;
+    color: rgba(79,79,79,1);
+}
+
+.hide{
+    display: none;
+}
+
+.section{
+    overflow: auto;
+    --theme-color: #000;
+    --theme-color-hover:  rgba(117, 117, 117, 0.1);
+    --theme-color-selected:  rgba(117, 117, 117, 0.12);
+}
+
+.section.PHIL-279{
+    --theme-color: #DE1F94;
+    --theme-color-hover:  rgba(222, 31, 148, 0.1);
+    --theme-color-selected:  rgba(222, 31, 148, 0.12);
+}
+
+.section.PHIL-379{
+    --theme-color: #F89A0D;
+    --theme-color-hover:  rgba(248, 154, 13, 0.1);
+    --theme-color-selected:  rgba(248, 154, 13, 0.12);
+}
+
+.grading-item {
+    opacity: 0.5;
+    transition: all 0.3s ease-out;
+}
+
+.grading-item:hover,
+.grading-item.active{
+    opacity: 1;
+}
+
+.grading-item .choices-grade{
+    white-space: nowrap;
+    text-align: right;
+}
+
+.grading-item .choices-grade .choice{
+    background: transparent;
+    padding-left: calc(.5em - 1px);
+    padding-right: calc(.5em - 1px);
+    color: rgba(79,79,79,1);
+    transition: all 0.3s ease-out;
+}
+
+.grading-item .choices-grade .choice:hover, 
+.grading-item .choices-grade .choice.checked{
+    background:var(--theme-color-hover);
+    color: var(--theme-color);
+}
+
+.grading-item .choices-grade .choice.checked{
+    background: var(--theme-color-selected);
+}
+
+.grading-item .choices-grade .choice .text{
+    font-weight: 700;
+    min-width: 24px;
+}
+
+
+.name.column{
+    margin: auto;
+}
+
+.grading-item .name{
+    margin: auto;
+    white-space: nowrap;
+}
