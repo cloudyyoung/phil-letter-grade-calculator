@@ -23,6 +23,12 @@ $.initialize = function (course) {
         return $.letterGrades.percentage[second.grade] - $.letterGrades.percentage[first.grade];
     });
 
+    // Establish dictionary for item grade code and item grade object
+    course.gradingItemGradesDictionary = {};
+    course.gradingItemGrades.forEach((itemGrade) => {
+        course.gradingItemGradesDictionary[itemGrade.code] = itemGrade;
+    });
+    console.log(course.gradingItemGradesDictionary);
 
 
     let courseHtml = `
@@ -84,7 +90,7 @@ $.initialize = function (course) {
                     <!-- ${itemGrade.title} -->
                     <a class="button is-white is-rounded choice ${itemGrade.code}" title="${itemGrade.title}" grade="${itemGrade.code}">
                         <i class="material-icons ${itemGrade.icon ? "" : "hide"}">${itemGrade.icon}</i>
-                        <i class="text ${itemGrade.text ? "" : "hide"}">${itemGrade.text}</i>
+                        <i class="material-text ${itemGrade.text ? "" : "hide"}">${itemGrade.text}</i>
                     </a>
                 `;
             });
@@ -113,17 +119,34 @@ $.initialize = function (course) {
 
     let tableBody = ``;
     course.gradingRules.forEach((rule) => {
-        tableBody += `<tr class="">`;
+        tableBody += `<tr class="rule-item">`;
         tableBody += `<th>${rule.grade}</th>`;
 
         course.components.forEach((component) => {
-            tableBody += `<td>`;
+            tableBody += `<td><div class="columns">`;
             let requirements = rule[component.code];
             $.each(requirements, (itemGrade, amount) => {
-                tableBody += `<span>${itemGrade} ${amount}</span>`;
+                let title = course.gradingItemGradesDictionary[itemGrade].title;
+                let icon = course.gradingItemGradesDictionary[itemGrade].icon;
+                let text = course.gradingItemGradesDictionary[itemGrade].text;
+                tableBody += `
+                    <div class="column is-narrow">
+                        <div class="columns is-mobile" title="${title}: ${amount}">
+                            <div class="column is-1">
+                                <i class="material-icons ${icon ? "" : "hide"}">${icon}</i>
+                                <i class="material-text ${text ? "" : "hide"}">${text}</i>
+                            </div>
+                            <div class="column is-narrow"><span>${amount}</span></div>
+                        </div>
+                    </div>
+                `;
             });
-            tableBody += `</td>`;
+            tableBody += `</div></td>`;
         });
+
+        if (course.gradingCountTotal) {
+            tableBody += `<td>${rule.total}</td>`;
+        }
 
         tableBody += `</tr>`;
     });
@@ -134,11 +157,12 @@ $.initialize = function (course) {
                 <div class="container">
 
                 <!-- Letter Grade Table -->
-                <table class="table letter-grade">
+                <table class="table is-hoverable is-fullwidth letter-grade">
                     <thead>
                         <tr>
                             <th><abbr title="Letter Grade">Grade</abbr></th>
                             ${tableHead}
+                            <th class="${course.gradingCountTotal ? "" : "hide"}">Total</th>
                         </tr>
                     </thead>
                     <tbody>

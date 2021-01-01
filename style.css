@@ -1,6 +1,10 @@
 html, body{
     font-family: 'Roboto', sans-serif !important;
     color: rgba(79,79,79,1);
+
+    --primary-color: #000;
+    --primary-color-hover:  rgba(117, 117, 117, 0.1);
+    --primary-color-selected:  rgba(117, 117, 117, 0.12);
 }
 
 .hide{
@@ -9,21 +13,18 @@ html, body{
 
 .section{
     overflow: auto;
-    --theme-color: #000;
-    --theme-color-hover:  rgba(117, 117, 117, 0.1);
-    --theme-color-selected:  rgba(117, 117, 117, 0.12);
 }
 
-.PHIL-279 .section{
-    --theme-color: #DE1F94;
-    --theme-color-hover:  rgba(222, 31, 148, 0.1);
-    --theme-color-selected:  rgba(222, 31, 148, 0.12);
+.PHIL-279{
+    --primary-color: #DE1F94;
+    --primary-color-hover:  rgba(222, 31, 148, 0.1);
+    --primary-color-selected:  rgba(222, 31, 148, 0.12);
 }
 
-.PHIL-379 .section{
-    --theme-color: #F89A0D;
-    --theme-color-hover:  rgba(248, 154, 13, 0.1);
-    --theme-color-selected:  rgba(248, 154, 13, 0.12);
+.PHIL-379{
+    --primary-color: #F89A0D;
+    --primary-color-hover:  rgba(248, 154, 13, 0.1);
+    --primary-color-selected:  rgba(248, 154, 13, 0.12);
 }
 
 .grading-item {
@@ -51,15 +52,15 @@ html, body{
 
 .grading-item .choices-grade .choice:hover, 
 .grading-item .choices-grade .choice.checked{
-    background:var(--theme-color-hover);
-    color: var(--theme-color);
+    background:var(--primary-color-hover);
+    color: var(--primary-color);
 }
 
 .grading-item .choices-grade .choice.checked{
-    background: var(--theme-color-selected);
+    background: var(--primary-color-selected);
 }
 
-.grading-item .choices-grade .choice .text{
+.material-text{
     font-weight: 700;
     min-width: 24px;
 }
@@ -74,5 +75,6 @@ html, body{
 }
 
 .table tr.is-selected{
-    background-color: var(--theme-color);
+    background-color: var(--primary-color-selected);
+    color: var(--primary-color);
 }
