@@ -129,13 +129,14 @@ $.initialize = function (course) {
         tableBody += `<th>${rule.grade}</th>`;
 
         course.components.forEach((component) => {
-            tableBody += `<td><div class="columns">`;
+            let ruleItemBody = ``;
             let requirements = rule[component.code];
+
             $.each(requirements, (itemGrade, amount) => {
                 let title = course.gradingItemGradesDictionary[itemGrade].title;
                 let icon = course.gradingItemGradesDictionary[itemGrade].icon;
                 let text = course.gradingItemGradesDictionary[itemGrade].text;
-                tableBody += `
+                ruleItemBody += `
                     <div class="column is-narrow">
                         <div class="columns is-mobile" title="${title}: ${amount}">
                             <div class="column is-1">
@@ -147,7 +148,20 @@ $.initialize = function (course) {
                     </div>
                 `;
             });
-            tableBody += `</div></td>`;
+
+            if (requirements == undefined) {
+                ruleItemBody = `
+                    <div class="column is-narrow">
+                        <div class="columns is-mobile" title="None">
+                            <div class="column is-1">
+                                <i class="material-icons">remove</i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            tableBody += `<td><div class="columns">${ruleItemBody}</div></td>`;
         });
 
         if (course.gradingCountTotal) {
@@ -159,22 +173,57 @@ $.initialize = function (course) {
 
 
     courseHtml += `
-            <section class="section>
+            <section class="section">
                 <div class="container">
 
-                <!-- Letter Grade Table -->
-                <table class="table is-hoverable is-fullwidth letter-grade">
-                    <thead>
-                        <tr>
-                            <th><abbr title="Letter Grade">Grade</abbr></th>
-                            ${tableHead}
-                            <th class="${course.gradingCountTotal ? "" : "hide"}">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${tableBody}
-                    </tbody>
-                </table >
+                <div class="columns">
+                    <div class="column is-8">
+                        
+                        <!-- Letter Grade Table -->
+                        <div class="table-container">
+                            <table class="table is-hoverable is-fullwidth letter-grade">
+                                <thead>
+                                    <tr>
+                                        <th><abbr title="Letter Grade">Grade</abbr></th>
+                                        ${tableHead}
+                                        <th class="${course.gradingCountTotal ? "" : "hide"}">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableBody}
+                                </tbody>
+                            </table >
+                        </div>
+
+                    </div>
+
+                    <div class="column">
+
+                        <div class="card tentative-letter-grade">
+                            <div class="card-content">
+                                <p class="title grade">A+</p>
+                                <p class="subtitle">Tentative Letter Grade</p>
+                                <p class="description">
+                                    This is your tentative grade, and also the maximum potential grade you can get, based on your current completed activities.<br>
+                                    It assumes all the activities that has not completed yet are going to be completed with the highest mark.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="card letter-grade">
+                            <div class="card-content">
+                                <p class="title grade">F</p>
+                                <p class="subtitle">Achieved Letter Grade</p>
+                                <p class="description">
+                                    This is the grade you have already achieved, your final grade will never be lower than this grade. <br>
+                                    If you stop completing any activities, then this will be your final grade by the end of course.
+                                </p>
+                            </div>
+                        
+                        </div>
+
+                    </div>
+                </div>
             </section>
         </div>
     `;
@@ -204,8 +253,15 @@ $(document).ready(() => {
 
         $.letterGrades.calculate($[course]);
 
-        $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected");
-        $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].letterGradeRuleIndex}`).addClass("is-selected");
-        $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].tentativeLetterGradeRuleIndex}`).addClass("is-selected");
+        $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected").removeClass("is-locked");
+        if ($.grades[course].letterGradeRuleIndex == $.grades[course].tentativeLetterGradeRuleIndex) {
+            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].letterGradeRuleIndex}`).addClass("is-selected is-locked");
+        } else {
+            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].letterGradeRuleIndex}`).addClass("is-selected");
+            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].tentativeLetterGradeRuleIndex}`).addClass("is-selected");
+        }
+
+        $(".card.tentative-letter-grade .grade").text($.grades[course].tentativeLetterGrade);
+        $(".card.letter-grade .grade").text($.grades[course].letterGrade);
     });
 });

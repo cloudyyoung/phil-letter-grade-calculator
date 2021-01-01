@@ -19,12 +19,14 @@ html, body{
     --primary-color: #DE1F94;
     --primary-color-hover:  rgba(222, 31, 148, 0.1);
     --primary-color-selected:  rgba(222, 31, 148, 0.12);
+    --primary-color-locked:  rgba(222, 31, 148, 0.2);
 }
 
 .PHIL-379{
     --primary-color: #F89A0D;
     --primary-color-hover:  rgba(248, 154, 13, 0.1);
     --primary-color-selected:  rgba(248, 154, 13, 0.12);
+    --primary-color-locked:  rgba(248, 154, 13, 0.2);
 }
 
 .grading-item {
@@ -75,6 +77,21 @@ html, body{
 }
 
 .table tr.is-selected{
-    background-color: var(--primary-color-selected);
+    background-color: var(--primary-color-hover);
     color: var(--primary-color);
+}
+
+.table tr.is-locked{
+    background-color: var(--primary-color-locked);
+    color: var(--primary-color);
+}
+
+.card{
+    margin-bottom: 1em;
+}
+
+.card .description{
+    font-size: 0.8em;
+    line-height: 1.3em;
+    color: rgba(79,79,79,.6);
 }
