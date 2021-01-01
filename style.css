@@ -14,13 +14,13 @@ html, body{
     --theme-color-selected:  rgba(117, 117, 117, 0.12);
 }
 
-.section.PHIL-279{
+.PHIL-279 .section{
     --theme-color: #DE1F94;
     --theme-color-hover:  rgba(222, 31, 148, 0.1);
     --theme-color-selected:  rgba(222, 31, 148, 0.12);
 }
 
-.section.PHIL-379{
+.PHIL-379 .section{
     --theme-color: #F89A0D;
     --theme-color-hover:  rgba(248, 154, 13, 0.1);
     --theme-color-selected:  rgba(248, 154, 13, 0.12);
@@ -64,7 +64,6 @@ html, body{
     min-width: 24px;
 }
 
-
 .name.column{
     margin: auto;
 }
@@ -72,4 +71,8 @@ html, body{
 .grading-item .name{
     margin: auto;
     white-space: nowrap;
+}
+
+.table tr.is-selected{
+    background-color: var(--theme-color);
 }

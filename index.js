@@ -18,12 +18,18 @@ $.initialize = function (course) {
         course.gradingCountTotalGrades = [];
     }
 
+    // Sort grading rules by letter grade
+    course.gradingRules.sort(function (first, second) {
+        return $.letterGrades.percentage[second.grade] - $.letterGrades.percentage[first.grade];
+    });
+
 
 
     let courseHtml = `
-        <section class="section ${course.code}" course="${course.code}">
-            <div class="container">
-                <div class="columns components">
+        <div class="course ${course.code}" course="${course.code}">
+            <section class="section">
+                <div class="container">
+                    <div class="columns components">
     `;
 
     course.components.forEach((component) => {
@@ -94,10 +100,55 @@ $.initialize = function (course) {
     });
 
     courseHtml += `
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
     `;
+
+    let tableHead = ``;
+    course.components.forEach((component) => {
+        tableHead += `<th>${component.title}</th>`;
+    });
+
+
+    let tableBody = ``;
+    course.gradingRules.forEach((rule) => {
+        tableBody += `<tr class="">`;
+        tableBody += `<th>${rule.grade}</th>`;
+
+        course.components.forEach((component) => {
+            tableBody += `<td>`;
+            let requirements = rule[component.code];
+            $.each(requirements, (itemGrade, amount) => {
+                tableBody += `<span>${itemGrade} ${amount}</span>`;
+            });
+            tableBody += `</td>`;
+        });
+
+        tableBody += `</tr>`;
+    });
+
+
+    courseHtml += `
+            <section class="section>
+                <div class="container">
+
+                <!-- Letter Grade Table -->
+                <table class="table letter-grade">
+                    <thead>
+                        <tr>
+                            <th><abbr title="Letter Grade">Grade</abbr></th>
+                            ${tableHead}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableBody}
+                    </tbody>
+                </table >
+            </section>
+        </div>
+    `;
+
 
     $(`body`).append(courseHtml);
 };
@@ -105,7 +156,7 @@ $.initialize = function (course) {
 
 $(document).ready(() => {
     $(".choices-grade .choice").click(function (e) {
-        let course = $(this).closest(".section").attr("course");
+        let course = $(this).closest(".course").attr("course");
         let gradingItemType = $(this).closest(".grading-item").attr("itemType");
         let gradingItemNo = $(this).closest(".grading-item").attr("itemNo");
         let grade = $(this).attr("grade");
