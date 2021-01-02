@@ -143,7 +143,7 @@ $.initialize = function (course) {
     // Build letter grade table body
     let tableBody = ``;
     course.gradingRules.forEach((rule) => {
-        tableBody += `<tr class="rule-item rule-${rule.index} grade-${rule.grade}">`;
+        tableBody += `<tr class="rule-item rule-${rule.index} grade-${$.letterGrades.percentage[rule.grade]} grade-${rule.grade}">`;
         tableBody += `<th>${rule.grade}</th>`;
 
         course.components.forEach((component) => {
@@ -288,8 +288,8 @@ $(document).ready(() => {
     });
 
     // Default select A+ and F
-    $(`.letter-grade.table .rule-item.rule-0`).addClass("is-selected");
-    $(`.letter-grade.table .rule-item.grade-F`).addClass("is-selected");
+    $(`.letter-grade.table .rule-item.grade-100`).addClass("is-selected");
+    $(`.letter-grade.table .rule-item.grade-0`).addClass("is-selected");
 
     $(".course-select.tabs .course-item").click(function (e) {
         $(".course-item").removeClass("is-active");
