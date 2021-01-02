@@ -209,9 +209,9 @@ $.initialize = function (course) {
 
                     <div class="column">
 
-                        <div class="card tentative-letter-grade">
+                        <div class="card is-shadowless tentative-letter-grade">
                             <div class="card-content">
-                                <p class="title grade">A+</p>
+                                <p class="title is-2 grade">A+</p>
                                 <p class="subtitle">Tentative Letter Grade</p>
                                 <p class="description">
                                     This is your tentative grade, and also the maximum potential grade you can get, based on your current completed activities.<br>
@@ -220,9 +220,9 @@ $.initialize = function (course) {
                             </div>
                         </div>
 
-                        <div class="card letter-grade">
+                        <div class="card is-shadowless letter-grade">
                             <div class="card-content">
-                                <p class="title grade">F</p>
+                                <p class="title is-2 grade">F</p>
                                 <p class="subtitle">Achieved Letter Grade</p>
                                 <p class="description">
                                     This is the grade you have already achieved, your final grade will never be lower than this grade. <br>

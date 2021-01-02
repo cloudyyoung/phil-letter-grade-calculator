@@ -102,13 +102,14 @@ html, body{
 
 .card{
     margin-bottom: 1em;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .card .description{
     font-size: 0.8em;
     line-height: 1.3em;
     color: rgba(79,79,79,.6);
+    margin-top: -1.6em;
 }
 
 .tabs.is-toggle li a{
