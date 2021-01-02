@@ -1,7 +1,6 @@
 
 $.PHIL279 = {
     title: "PHIL 279",
-    topic: "Logic I",
     code: "PHIL-279",
     components: [
         { title: "Problem Set", code: "problem-set" },
@@ -35,7 +34,6 @@ $.initialize($.PHIL279);
 
 $.PHIL379 = {
     title: "PHIL 379",
-    topic: "Logic II",
     code: "PHIL-379",
     components: [
         { title: "Quiz", code: "quiz", grades: ["incomplete", "complete"] },

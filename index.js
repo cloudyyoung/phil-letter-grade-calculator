@@ -46,14 +46,6 @@ $.initialize = function (course) {
     // Build course html
     let courseHtml = `
         <div class="course ${course.code} is-hidden" course="${course.code}" id="${course.code}">
-            <section class="hero">
-                <div class="hero-body">        
-                    <div class="container">
-                        <h4 class="title is-3 course-title">${course.title}</h4>
-                        <h5 class="subtitle is-5 course-topic">${course.topic}</h5>
-                    </div>
-                </div>
-            </section>
             <section class="section">
                 <div class="container">
                     <div class="columns components">
