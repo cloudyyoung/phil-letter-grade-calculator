@@ -41,7 +41,7 @@ $.initialize = function (course) {
 
 
     // Insert course into course select tabs
-    $(".course-select.tabs ul").append(`<li class="${course.code} course-item" course="${course.code}"><a>${course.title}</a></li>`);
+    $(".course-select.tabs ul").append(`<li class="${course.code} course-item" course="${course.code}"><a href="#${course.code}">${course.title}</a></li>`);
 
     // Build course html
     let courseHtml = `
@@ -294,5 +294,10 @@ $(document).ready(() => {
         $(`.course.${course}`).fadeIn();
     });
 
-    $(".course-item").first().click();
+    if (window.location.hash) {
+        // # in url exists
+        $(`.course-select.tabs .course-item.${window.location.hash.substring(1)}`).click();
+    } else {
+        $(".course-item").first().click();
+    }
 });

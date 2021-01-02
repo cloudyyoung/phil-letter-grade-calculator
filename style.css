@@ -1,6 +1,7 @@
 html, body{
     font-family: 'Roboto', sans-serif !important;
     color: rgba(79,79,79,1);
+    scroll-behavior: smooth;
 
     --primary-color: #000;
     --primary-color-hover:  rgba(117, 117, 117, 0.1);
