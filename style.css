@@ -63,6 +63,12 @@ html, body{
     min-width: 24px;
     font-size: 1.1em;
     line-height: 1.4em;
+    vertical-align: bottom;
+}
+
+.material-icons{
+    display:inline-flex;
+    vertical-align:top;
 }
 
 .name.column{
@@ -86,6 +92,12 @@ html, body{
 .table tr.is-locked{
     background-color: var(--primary-color-locked);
     color: var(--primary-color);
+}
+
+.table th, .table td{
+    display: table-cell;
+    vertical-align: middle;
+    height: 3.6em;
 }
 
 .card{
