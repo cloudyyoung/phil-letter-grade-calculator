@@ -215,7 +215,7 @@ $.initialize = function (course) {
                                 <p class="subtitle">Tentative Letter Grade</p>
                                 <p class="description">
                                     This is your tentative grade, and also the maximum potential grade you can get, based on your current completed activities.<br>
-                                    It assumes all the activities that has not completed yet are going to be completed with the highest mark.
+                                    It assumes all the rest activities that has not completed yet are going to be completed with the highest mark.
                                 </p>
                             </div>
                         </div>
