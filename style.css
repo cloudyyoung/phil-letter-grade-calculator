@@ -7,10 +7,6 @@ html, body{
     --primary-color-selected:  rgba(117, 117, 117, 0.12);
 }
 
-.hide{
-    display: none;
-}
-
 .section{
     overflow: auto;
 }
@@ -98,4 +94,22 @@ html, body{
     font-size: 0.8em;
     line-height: 1.3em;
     color: rgba(79,79,79,.6);
+}
+
+.tabs li.is-active *{
+    color: var(--primary-color) !important;
+    border-bottom-color: var(--primary-color) !important;
+}
+
+.course-select .course-item{
+    font-weight: 700;
+}
+
+.course-title{
+    color: var(--primary-color);
+}
+
+.footer a{
+    color: #000;
+    text-decoration: underline dotted;
 }

@@ -40,10 +40,20 @@ $.initialize = function (course) {
     });
 
 
+    // Insert course into course select tabs
+    $(".course-select.tabs ul").append(`<li class="${course.code} course-item" course="${course.code}"><a>${course.title}</a></li>`);
 
     // Build course html
     let courseHtml = `
-        <div class="course ${course.code}" course="${course.code}">
+        <div class="course ${course.code} is-hidden" course="${course.code}" id="${course.code}">
+            <section class="hero">
+                <div class="hero-body">        
+                    <div class="container">
+                        <h4 class="title is-3 course-title">${course.title}</h4>
+                        <h5 class="subtitle is-5 course-topic">${course.topic}</h5>
+                    </div>
+                </div>
+            </section>
             <section class="section">
                 <div class="container">
                     <div class="columns components">
@@ -80,7 +90,7 @@ $.initialize = function (course) {
         let componentHtml = `
             <!-- ${component.title} -->
             <div class="column">
-                <h4 class="title is-4">${component.title}</h4>
+                <h5 class="title is-5">${component.title}</h5>
         `;
 
         for (let t = 1; t <= component.units; t++) {
@@ -101,8 +111,8 @@ $.initialize = function (course) {
                 componentHtml += `
                     <!-- ${itemGrade.title} -->
                     <a class="button is-white is-rounded choice ${itemGrade.code}" title="${itemGrade.title}" grade="${itemGrade.code}">
-                        <i class="material-icons ${itemGrade.icon ? "" : "hide"}">${itemGrade.icon}</i>
-                        <i class="material-text ${itemGrade.text ? "" : "hide"}">${itemGrade.text}</i>
+                        <i class="material-icons ${itemGrade.icon ? "" : "is-hidden"}">${itemGrade.icon}</i>
+                        <i class="material-text ${itemGrade.text ? "" : "is-hidden"}">${itemGrade.text}</i>
                     </a>
                 `;
             });
@@ -146,10 +156,10 @@ $.initialize = function (course) {
                 let text = course.gradingItemGradesDictionary[itemGrade].text;
                 ruleItemBody += `
                     <div class="column is-narrow">
-                        <div class="columns is-mobile" title="${title}: ${amount}">
+                        <div class="columns is-mobile" title="${title}: ${amount}" style="width: 60px;">
                             <div class="column is-1">
-                                <i class="material-icons ${icon ? "" : "hide"}">${icon}</i>
-                                <i class="material-text ${text ? "" : "hide"}">${text}</i>
+                                <i class="material-icons ${icon ? "" : "is-hidden"}">${icon}</i>
+                                <i class="material-text ${text ? "" : "is-hidden"}">${text}</i>
                             </div>
                             <div class="column is-narrow"><span>${amount}</span></div>
                         </div>
@@ -194,7 +204,7 @@ $.initialize = function (course) {
                                     <tr>
                                         <th><abbr title="Letter Grade">Grade</abbr></th>
                                         ${tableHead}
-                                        <th class="${course.gradingCountTotal ? "" : "hide"}">Total</th>
+                                        <th class="${course.gradingCountTotal ? "" : "is-hidden"}">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -281,4 +291,14 @@ $(document).ready(() => {
     $(`.letter-grade.table .rule-item.rule-0`).addClass("is-selected");
     $(`.letter-grade.table .rule-item.grade-F`).addClass("is-selected");
 
+    $(".course-select.tabs .course-item").click(function (e) {
+        $(".course-item").removeClass("is-active");
+        $(this).addClass("is-active");
+
+        let course = $(this).attr("course");
+        $(".course").addClass("is-hidden");
+        $(`.course.${course}`).removeClass("is-hidden");
+    });
+
+    $(".course-item").first().click();
 });
