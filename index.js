@@ -289,7 +289,9 @@ $(document).ready(() => {
 
         let course = $(this).attr("course");
         $(".course").addClass("is-hidden");
+        $(".course").hide();
         $(`.course.${course}`).removeClass("is-hidden");
+        $(`.course.${course}`).fadeIn();
     });
 
     $(".course-item").first().click();
