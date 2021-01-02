@@ -226,7 +226,7 @@ $.initialize = function (course) {
                                 <p class="subtitle">Achieved Letter Grade</p>
                                 <p class="description">
                                     This is the grade you have already achieved, your final grade will never be lower than this grade. <br>
-                                    If you stop completing any activities, then this will be your final grade by the end of course.
+                                    If you stop completing any activities at this point, then this will be your final grade by the end of course.
                                 </p>
                             </div>
                         

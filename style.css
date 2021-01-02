@@ -61,6 +61,8 @@ html, body{
 .material-text{
     font-weight: 700;
     min-width: 24px;
+    font-size: 1.1em;
+    line-height: 1.4em;
 }
 
 .name.column{
@@ -97,9 +99,41 @@ html, body{
     color: rgba(79,79,79,.6);
 }
 
-.tabs li.is-active *{
-    color: var(--primary-color) !important;
-    border-bottom-color: var(--primary-color) !important;
+.tabs.is-toggle li a{
+    color: var(--primary-color);
+    background-color: #f5f5f5;
+    border-color: transparent;
+}
+
+.tabs.is-toggle li a:hover{
+    border-color: transparent;
+}
+
+.tabs.is-toggle li.is-active a{
+    color: #fff;
+    background-color: var(--primary-color);
+    border-color: transparent;
+    transition: all 0.25s ease-out;
+}
+
+.tabs.is-toggle.is-toggle-rounded-seperate li a{
+    border-radius: 5000px !important;
+    background-color: transparent;
+    padding-left: 1em !important;
+    padding-right: 1em !important;
+    transition: all 0.25s ease-out;
+    color: rgba(79,79,79,.5);
+}
+
+.tabs.is-toggle.is-toggle-rounded-seperate li.is-active a{
+    background-color: var(--primary-color-hover);
+    color: var(--primary-color);
+    transition: all 0.25s ease-out;
+}
+
+
+.tabs.is-toggle li + li{
+    margin-left: 0px;
 }
 
 .course-select .course-item{
@@ -108,6 +142,10 @@ html, body{
 
 .course-title{
     color: var(--primary-color);
+}
+
+.footer{
+    background: transparent;
 }
 
 .footer a{
