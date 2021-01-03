@@ -30,6 +30,7 @@ $.PHIL279 = {
     ]
 };
 $.initialize($.PHIL279);
+$.display($.PHIL279);
 
 
 $.PHIL379 = {
@@ -76,3 +77,4 @@ $.PHIL379 = {
     ]
 };
 $.initialize($.PHIL379);
+$.display($.PHIL379);

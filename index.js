@@ -23,7 +23,6 @@ $.initialize = function (course) {
     course.gradingItemGrades.forEach((itemGrade) => {
         course.gradingItemGradesDictionary[itemGrade.code] = itemGrade;
     });
-    console.log(course.gradingItemGradesDictionary);
 
     // Intialize F grade
     course.gradingRules.push({ grade: "F", total: 0 });
@@ -39,17 +38,6 @@ $.initialize = function (course) {
         return first.worth - second.worth;
     });
 
-
-    // Insert course into course select tabs
-    $(".course-select.tabs ul").append(`<li class="${course.code} course-item" course="${course.code}"><a href="#${course.code}">${course.title}</a></li>`);
-
-    // Build course html
-    let courseHtml = `
-        <div class="course ${course.code} is-hidden" course="${course.code}" id="${course.code}">
-            <section class="section">
-                <div class="container">
-                    <div class="columns components">
-    `;
 
     // Build form
     course.components.forEach((component) => {
@@ -76,9 +64,24 @@ $.initialize = function (course) {
         if (!component.units) {
             component.units = course.units;
         }
+    });
+};
 
+$.display = function (course) {
 
+    // Insert course into course select tabs
+    $(".course-select.tabs ul").append(`<li class="${course.code} course-item" course="${course.code}"><a href="#${course.code}">${course.title}</a></li>`);
 
+    // Build course html
+    let courseHtml = `
+        <div class="course ${course.code} is-hidden" course="${course.code}" id="${course.code}">
+            <section class="section">
+                <div class="container">
+                    <div class="columns components">
+    `;
+
+    // Build form
+    course.components.forEach((component) => {
         let componentHtml = `
             <!-- ${component.title} -->
             <div class="column">
@@ -238,10 +241,8 @@ $.initialize = function (course) {
         </div>
     `;
 
-
     $(`body`).append(courseHtml);
 };
-
 
 $(document).ready(() => {
     $(".choices-grade .choice").click(function (e) {
