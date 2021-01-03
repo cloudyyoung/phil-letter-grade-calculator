@@ -48,12 +48,12 @@ $.letterGrades = {
         });
 
         // Set default letter grade & tentative letter grade
-        $.grades[course.code].letterGrade = "F";
+        $.grades[course.code].achievedLetterGrade = "F";
         $.grades[course.code].tentativeLetterGrade = "F";
 
         // Match for grading rules to calculate Letter Grade
         course.gradingRules.forEach((rule) => {
-            let match = true;
+            let matchAchieved = true;
             let matchTentative = true;
             let totalTentative = 0;
 
@@ -69,23 +69,23 @@ $.letterGrades = {
 
                 // If match all component requirements & their amount
                 $.each(requirements, (itemGrade, amount) => {
-                    let gainedAmount = $.grades[course.code][component.code][itemGrade];
+                    let gainedAmountAchieved = $.grades[course.code][component.code][itemGrade];
 
                     let currentWorth = itemGradeDictionary[itemGrade];
                     if (currentWorth > 0) {
                         while (itemGradeDictionary[++currentWorth] != undefined) {
                             let itemGradeAdd = itemGradeDictionary[currentWorth];
-                            gainedAmount += $.grades[course.code][component.code][itemGradeAdd]
+                            gainedAmountAchieved += $.grades[course.code][component.code][itemGradeAdd]
                         }
                     }
 
                     // Assume all not-selected items are all complete-plus
-                    let gainedAmountTentative = gainedAmount + $.grades[course.code][component.code]["null"];
+                    let gainedAmountTentative = gainedAmountAchieved + $.grades[course.code][component.code]["null"];
                     totalTentative += gainedAmountTentative;
 
                     // Match rule amount
-                    if (gainedAmount < amount) {
-                        match = false;
+                    if (gainedAmountAchieved < amount) {
+                        matchAchieved = false;
                     }
 
                     // Match rule amount
@@ -98,7 +98,7 @@ $.letterGrades = {
 
             // If match total items
             if ($.grades[course.code].total < rule.total) {
-                match = false;
+                matchAchieved = false;
             }
 
             // If match total items
@@ -107,12 +107,12 @@ $.letterGrades = {
             }
 
             // If match the current grading rule in general
-            if (match) {
-                let letterGrade = this.max($.grades[course.code].letterGrade, rule.grade);
+            if (matchAchieved) {
+                let letterGrade = this.max($.grades[course.code].achievedLetterGrade, rule.grade);
 
                 if (letterGrade == rule.grade) {
-                    $.grades[course.code].letterGrade = letterGrade;
-                    $.grades[course.code].letterGradeRuleIndex = rule.index;
+                    $.grades[course.code].achievedLetterGrade = letterGrade;
+                    $.grades[course.code].achievedLetterGradeRuleIndex = rule.index;
                 }
             }
 
@@ -127,7 +127,7 @@ $.letterGrades = {
             }
         });
 
-        console.log($.grades[course.code].letterGrade, $.grades[course.code].tentativeLetterGrade);
+        console.log($.grades[course.code].achievedLetterGrade, $.grades[course.code].tentativeLetterGrade);
     }
 };
 

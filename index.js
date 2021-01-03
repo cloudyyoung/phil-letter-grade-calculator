@@ -268,22 +268,23 @@ $(document).ready(() => {
 
         // Update letter grade table highlights
         $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected").removeClass("is-locked");
-        if ($.grades[course].letterGradeRuleIndex == $.grades[course].tentativeLetterGradeRuleIndex) {
-            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].letterGradeRuleIndex}`).addClass("is-selected is-locked");
+        if ($.grades[course].achievedLetterGradeRuleIndex == $.grades[course].tentativeLetterGradeRuleIndex) {
+            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].achievedLetterGradeRuleIndex}`).addClass("is-selected is-locked");
         } else {
-            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].letterGradeRuleIndex}`).addClass("is-selected");
+            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].achievedLetterGradeRuleIndex}`).addClass("is-selected");
             $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].tentativeLetterGradeRuleIndex}`).addClass("is-selected");
         }
 
         // Upate the grades on letter grade cards
         $(`.${course} .letter-grade.card.tentative-letter-grade .grade`).text($.grades[course].tentativeLetterGrade);
-        $(`.${course} .letter-grade.card.achieved-letter-grade .grade`).text($.grades[course].letterGrade);
+        $(`.${course} .letter-grade.card.achieved-letter-grade .grade`).text($.grades[course].achievedLetterGrade);
     });
 
     // Default select A+ and F
     $(`.letter-grade.table .rule-item.grade-100`).addClass("is-selected");
     $(`.letter-grade.table .rule-item.grade-0`).addClass("is-selected");
 
+    // Course select tabs
     $(".course-select.tabs .course-item").click(function (e) {
         $(".course-item").removeClass("is-active");
         $(this).addClass("is-active");
