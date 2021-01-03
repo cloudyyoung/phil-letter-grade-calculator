@@ -209,7 +209,7 @@ $.initialize = function (course) {
 
                     <div class="column">
 
-                        <div class="card is-shadowless tentative-letter-grade">
+                        <div class="card is-shadowless letter-grade tentative-letter-grade">
                             <div class="card-content">
                                 <p class="title is-2 grade">A+</p>
                                 <p class="subtitle">Tentative Letter Grade</p>
@@ -220,7 +220,7 @@ $.initialize = function (course) {
                             </div>
                         </div>
 
-                        <div class="card is-shadowless letter-grade">
+                        <div class="card is-shadowless letter-grade achieved-letter-grade">
                             <div class="card-content">
                                 <p class="title is-2 grade">F</p>
                                 <p class="subtitle">Achieved Letter Grade</p>
@@ -275,8 +275,8 @@ $(document).ready(() => {
         }
 
         // Upate the grades on letter grade cards
-        $(".card.tentative-letter-grade .grade").text($.grades[course].tentativeLetterGrade);
-        $(".card.letter-grade .grade").text($.grades[course].letterGrade);
+        $(`.${course} .letter-grade.card.tentative-letter-grade .grade`).text($.grades[course].tentativeLetterGrade);
+        $(`.${course} .letter-grade.card.achieved-letter-grade .grade`).text($.grades[course].letterGrade);
     });
 
     // Default select A+ and F
