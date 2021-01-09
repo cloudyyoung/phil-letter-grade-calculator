@@ -212,6 +212,7 @@ $.display = function (course) {
 
                     <div class="column">
 
+                        <!- Tentative Grade ->
                         <div class="card is-shadowless letter-grade tentative-letter-grade">
                             <div class="card-content">
                                 <p class="title is-2 grade">A+</p>
@@ -223,6 +224,7 @@ $.display = function (course) {
                             </div>
                         </div>
 
+                        <!- Achieved Grade ->
                         <div class="card is-shadowless letter-grade achieved-letter-grade">
                             <div class="card-content">
                                 <p class="title is-2 grade">F</p>
@@ -232,7 +234,17 @@ $.display = function (course) {
                                     If you stop completing any activities at this point, then this will be your final grade by the end of course.
                                 </p>
                             </div>
-                        
+                        </div>
+
+                        <!- Disclaimer ->
+                        <div class="card is-shadowless disclaimer">
+                            <div class="card-content">
+                                <p class="title is-2"></p>
+                                <p class="subtitle"></p>
+                                <p class="description">
+                                    <i class="material-icons" style="font-size: inherit; margin-top: 2px;">warning</i> Disclaimer: The calculator only provides a general reference of your grade, please subject to your professor.
+                                </p>
+                            </div>
                         </div>
 
                     </div>
