@@ -257,7 +257,12 @@ $.display = function (course) {
     $(`body`).append(courseHtml);
 };
 
+
+
 $(document).ready(() => {
+    $.cookie.json = true;
+    $.grades = $.cookie("grades") ? $.cookie("grades") : $.grades;
+
     $(".choices-grade .choice").click(function (e) {
         // Read data from DOM
         let course = $(this).closest(".course").attr("course");
@@ -278,6 +283,7 @@ $(document).ready(() => {
         }
 
         $.letterGrades.calculate($[course]);
+        $.cookie("grades", $.grades, { expires: 365 });
 
         // Update letter grade table highlights
         $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected").removeClass("is-locked");
