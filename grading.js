@@ -30,8 +30,8 @@ $.letterGrades = {
         }
         course.components.forEach((component) => {
             $.grades[course.code][component.code]["null"] = 0;
-            component.grades.forEach((itemGrade) => {
-                $.grades[course.code][component.code][itemGrade.code] = 0;
+            component.grades.forEach((activityGrade) => {
+                $.grades[course.code][component.code][activityGrade.code] = 0;
             });
         });
 
@@ -61,21 +61,21 @@ $.letterGrades = {
                 let requirements = rule[component.code];
 
                 // Make item grade dictionary
-                let itemGradeDictionary = {};
-                component.grades.forEach((itemGrade) => {
-                    itemGradeDictionary[itemGrade.code] = itemGrade.worth;
-                    itemGradeDictionary[itemGrade.worth] = itemGrade.code;
+                let activityGradeDictionary = {};
+                component.grades.forEach((activityGrade) => {
+                    activityGradeDictionary[activityGrade.code] = activityGrade.worth;
+                    activityGradeDictionary[activityGrade.worth] = activityGrade.code;
                 });
 
                 // If match all component requirements & their amount
-                $.each(requirements, (itemGrade, amount) => {
-                    let gainedAmountAchieved = $.grades[course.code][component.code][itemGrade];
+                $.each(requirements, (activityGrade, amount) => {
+                    let gainedAmountAchieved = $.grades[course.code][component.code][activityGrade];
 
-                    let currentWorth = itemGradeDictionary[itemGrade];
+                    let currentWorth = activityGradeDictionary[activityGrade];
                     if (currentWorth > 0) {
-                        while (itemGradeDictionary[++currentWorth] != undefined) {
-                            let itemGradeAdd = itemGradeDictionary[currentWorth];
-                            gainedAmountAchieved += $.grades[course.code][component.code][itemGradeAdd]
+                        while (activityGradeDictionary[++currentWorth] != undefined) {
+                            let activityGradeAdd = activityGradeDictionary[currentWorth];
+                            gainedAmountAchieved += $.grades[course.code][component.code][activityGradeAdd]
                         }
                     }
 

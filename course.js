@@ -8,7 +8,7 @@ $.PHIL279 = {
         { title: "Challenge Problem", code: "challenge-problem", grades: ["incomplete", "complete"] },
     ],
     units: 12, // the number of units/amount for each component
-    gradingItemGrades: [ // possible grades for each graded item, default is all of them
+    gradingActivityGrades: [ // possible grades for each graded item, default is all of them
         { title: "Complete+", code: "complete-plus", icon: "done_all", worth: 2 },
         { title: "Complete", code: "complete", icon: "done", worth: 1 },
         { title: "Incomplete", code: "incomplete", icon: "remove", worth: 0 },
@@ -44,7 +44,7 @@ $.PHIL379 = {
         { title: "Group Work", code: "group-work", units: 5, grades: ["incomplete", "submit"] }, // override default units 10 to 5
     ],
     units: 10, // the number of units/amount for each component
-    gradingItemGrades: [
+    gradingActivityGrades: [
         // EMRN
         { title: "Exemplary", code: "E", text: "E", worth: 4 },
         { title: "Meet Expectation", code: "M", text: "M", worth: 3 },

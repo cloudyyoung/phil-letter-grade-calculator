@@ -26,22 +26,22 @@ html, body{
     --primary-color-locked:  rgba(248, 154, 13, 0.2);
 }
 
-.grading-item {
+.activity {
     opacity: 0.5;
     transition: all 0.3s ease-out;
 }
 
-.grading-item:hover,
-.grading-item.active{
+.activity:hover,
+.activity.active{
     opacity: 1;
 }
 
-.grading-item .choices-grade{
+.activity .choices-grade{
     white-space: nowrap;
     text-align: right;
 }
 
-.grading-item .choices-grade .choice{
+.activity .choices-grade .choice{
     background: transparent;
     padding-left: calc(.5em - 1px);
     padding-right: calc(.5em - 1px);
@@ -49,13 +49,13 @@ html, body{
     transition: all 0.25s ease-out;
 }
 
-.grading-item .choices-grade .choice:hover, 
-.grading-item .choices-grade .choice.checked{
+.activity .choices-grade .choice:hover, 
+.activity .choices-grade .choice.checked{
     background:var(--primary-color-hover);
     color: var(--primary-color);
 }
 
-.grading-item .choices-grade .choice.checked{
+.activity .choices-grade .choice.checked{
     background: var(--primary-color-selected);
 }
 
@@ -76,7 +76,7 @@ html, body{
     margin: auto;
 }
 
-.grading-item .name{
+.activity .name{
     margin: auto;
     white-space: nowrap;
 }

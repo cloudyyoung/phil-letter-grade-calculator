@@ -19,9 +19,9 @@ $.initialize = function (course) {
     });
 
     // Establish dictionary for item grade code and item grade object
-    course.gradingItemGradesDictionary = {};
-    course.gradingItemGrades.forEach((itemGrade) => {
-        course.gradingItemGradesDictionary[itemGrade.code] = itemGrade;
+    course.gradingActivityGradesDictionary = {};
+    course.gradingActivityGrades.forEach((activityGrade) => {
+        course.gradingActivityGradesDictionary[activityGrade.code] = activityGrade;
     });
 
     // Intialize F grade
@@ -34,7 +34,7 @@ $.initialize = function (course) {
     });
 
     // Sort item grades from low to high
-    course.gradingItemGrades.sort(function (first, second) {
+    course.gradingActivityGrades.sort(function (first, second) {
         return first.worth - second.worth;
     });
 
@@ -45,14 +45,14 @@ $.initialize = function (course) {
 
         // Initialize item grades for current component
         if (component.grades) {
-            course.gradingItemGrades.forEach((itemGrade) => {
-                if (component.grades.includes(itemGrade.code)) {
-                    component.grades.splice(itemGrade.code, 1);
-                    component.grades.push(itemGrade);
+            course.gradingActivityGrades.forEach((activityGrade) => {
+                if (component.grades.includes(activityGrade.code)) {
+                    component.grades.splice(activityGrade.code, 1);
+                    component.grades.push(activityGrade);
                 }
             });
         } else {
-            component.grades = course.gradingItemGrades;
+            component.grades = course.gradingActivityGrades;
         }
 
         // Sort item grades from low to high
@@ -92,7 +92,7 @@ $.display = function (course) {
             $.grades[course.code][component.code][t] = null;
             componentHtml += `
                 <!-- Item: Unit ${t} -->
-                <div class="columns is-mobile ${component.code} grading-item" itemType="${component.code}" itemNo="${t}">
+                <div class="columns is-mobile ${component.code} activity" itemType="${component.code}" itemNo="${t}">
                     <!-- Item name -->
                     <div class="column name ${component.code}">
                         ${component.title} ${t}
@@ -102,12 +102,12 @@ $.display = function (course) {
                         <div class="control choices-grade">
             `;
 
-            component.grades.forEach((itemGrade) => {
+            component.grades.forEach((activityGrade) => {
                 componentHtml += `
-                    <!-- ${itemGrade.title} -->
-                    <a class="button is-white is-rounded choice ${itemGrade.code}" title="${itemGrade.title}" grade="${itemGrade.code}">
-                        <i class="material-icons ${itemGrade.icon ? "" : "is-hidden"}">${itemGrade.icon}</i>
-                        <i class="material-text ${itemGrade.text ? "" : "is-hidden"}">${itemGrade.text}</i>
+                    <!-- ${activityGrade.title} -->
+                    <a class="button is-white is-rounded choice ${activityGrade.code}" title="${activityGrade.title}" grade="${activityGrade.code}">
+                        <i class="material-icons ${activityGrade.icon ? "" : "is-hidden"}">${activityGrade.icon}</i>
+                        <i class="material-text ${activityGrade.text ? "" : "is-hidden"}">${activityGrade.text}</i>
                     </a>
                 `;
             });
@@ -145,10 +145,10 @@ $.display = function (course) {
             let ruleItemBody = ``;
             let requirements = rule[component.code];
 
-            $.each(requirements, (itemGrade, amount) => {
-                let title = course.gradingItemGradesDictionary[itemGrade].title;
-                let icon = course.gradingItemGradesDictionary[itemGrade].icon;
-                let text = course.gradingItemGradesDictionary[itemGrade].text;
+            $.each(requirements, (activityGrade, amount) => {
+                let title = course.gradingActivityGradesDictionary[activityGrade].title;
+                let icon = course.gradingActivityGradesDictionary[activityGrade].icon;
+                let text = course.gradingActivityGradesDictionary[activityGrade].text;
                 ruleItemBody += `
                     <div class="column is-narrow">
                         <div class="columns is-mobile" title="${title}: ${amount}" style="width: 60px;">
@@ -261,19 +261,19 @@ $(document).ready(() => {
     $(".choices-grade .choice").click(function (e) {
         // Read data from DOM
         let course = $(this).closest(".course").attr("course");
-        let gradingItemType = $(this).closest(".grading-item").attr("itemType");
-        let gradingItemNo = $(this).closest(".grading-item").attr("itemNo");
+        let gradingItemType = $(this).closest(".activity").attr("itemType");
+        let gradingItemNo = $(this).closest(".activity").attr("itemNo");
         let grade = $(this).attr("grade");
 
         // Change state of item grade choice
         if ($(this).hasClass("checked")) {
             $(this).removeClass("checked");
-            $(this).closest(".grading-item").removeClass("active");
+            $(this).closest(".activity").removeClass("active");
             $.grades[course][gradingItemType][gradingItemNo] = null;
         } else {
             $(this).parent().children().removeClass("checked");
             $(this).addClass("checked");
-            $(this).closest(".grading-item").addClass("active");
+            $(this).closest(".activity").addClass("active");
             $.grades[course][gradingItemType][gradingItemNo] = grade;
         }
 
