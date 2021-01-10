@@ -405,16 +405,6 @@ class Course {
         return [tentativeLetterGrade, tentativeLetterGradeRuleId, achievedLetterGrade, achievedLetterGradeRuleId];
 
     }
-
-    restore() {
-        this.components.forEach((component) => {
-            for (let t = 1; t <= this.units; t++) {
-                let activityCode = `${this.code}-${component.code}-${t}`;
-                let componentsGrade = localStorage.getItem(activityCode);
-                $(`.${activityCode} .choices-grade .button.${componentsGrade}`).click();
-            }
-        });
-    }
 }
 
 class Rule {

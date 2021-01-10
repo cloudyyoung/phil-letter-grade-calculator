@@ -61,7 +61,13 @@ $(document).ready(() => {
     }
 
     Course.list.forEach((course) => {
-        course.restore();
+        course.components.forEach((component) => {
+            for (let t = 1; t <= course.units; t++) {
+                let activityCode = `${course.code}-${component.code}-${t}`;
+                let componentsGrade = localStorage.getItem(activityCode);
+                $(`.${activityCode} .choices-grade .button.${componentsGrade}`).click();
+            }
+        });
     });
 
 });
