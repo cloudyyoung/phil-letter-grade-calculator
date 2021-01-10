@@ -60,6 +60,7 @@ $(document).ready(() => {
         $(".course-item").first().click();
     }
 
+    // Restore activities from local storage
     Course.list.forEach((course) => {
         course.components.forEach((component) => {
             for (let t = 1; t <= course.units; t++) {

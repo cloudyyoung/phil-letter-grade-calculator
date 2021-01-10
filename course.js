@@ -42,11 +42,11 @@ class Course {
             this.rules.push(new Rule(rule));
         });
 
-        this.initialize();
-        this.display();
+        this.#initialize();
+        this.#display();
     }
 
-    getProperty(properties, key) {
+    #getProperty(properties, key) {
         if (typeof key == "number") {
             return properties[key];
         } else {
@@ -61,18 +61,18 @@ class Course {
         }
     }
 
-    getComponent(key) {
-        return this.getProperty(this.components, key);
+    #getComponent(key) {
+        return this.#getProperty(this.components, key);
     }
 
-    getComponentsGrade(key) {
-        return this.getProperty(this.componentsGrades, key);
+    #getComponentsGrade(key) {
+        return this.#getProperty(this.componentsGrades, key);
     }
 
-    initialize() {
+    #initialize() {
         // Sort grading rules by letter grade
         this.rules.sort(function (first, second) {
-            return LetterGrade.percentage[second.grade] - LetterGrade.percentage[first.grade];
+            return LetterGrade.getPercentage(second.grade) - LetterGrade.getPercentage(first.grade);
         });
 
         // Intialize F grade
@@ -109,7 +109,7 @@ class Course {
         });
     }
 
-    display() {
+    #display() {
         // Insert course into course select tabs
         $(".course-select.tabs ul").append(`<li class="${this.code} course-item" course="${this.code}"><a href="#${this.code}">${this.title}</a></li>`);
 
@@ -177,7 +177,7 @@ class Course {
         // Build letter grade table body
         let tableBody = ``;
         this.rules.forEach((rule) => {
-            tableBody += `<tr class="rule-item rule-${rule.id} grade-${LetterGrade.percentage[rule.grade]} grade-${rule.grade}">`;
+            tableBody += `<tr class="rule-item rule-${rule.id} grade-${LetterGrade.getPercentage(rule.grade)} grade-${rule.grade}">`;
             tableBody += `<th>${rule.grade}</th>`;
 
             this.components.forEach((component) => {
@@ -185,7 +185,7 @@ class Course {
 
                 if (rule.hasRequirements(component.code)) {
                     $.each(rule.requirements[component.code], (activityGradeCode, amount) => {
-                        let activityGrade = this.getComponentsGrade(activityGradeCode);
+                        let activityGrade = this.#getComponentsGrade(activityGradeCode);
                         tableBody += `
                             <div class="column is-narrow">
                                 <div class="columns is-mobile" title="${activityGrade.title}: ${amount}" style="width: 60px;">
@@ -403,7 +403,6 @@ class Course {
         });
 
         return [tentativeLetterGrade, tentativeLetterGradeRuleId, achievedLetterGrade, achievedLetterGradeRuleId];
-
     }
 }
 
@@ -435,7 +434,7 @@ class Rule {
 }
 
 class LetterGrade {
-    static percentage = {
+    static #percentage = {
         "A+": 100,
         "A": 95,
         "A-": 90,
@@ -451,13 +450,17 @@ class LetterGrade {
     };
 
     static max(letterGrade1, letterGrade2) {
-        let percentage1 = LetterGrade.percentage[letterGrade1];
-        let percentage2 = LetterGrade.percentage[letterGrade2];
+        let percentage1 = LetterGrade.#percentage[letterGrade1];
+        let percentage2 = LetterGrade.#percentage[letterGrade2];
         if (percentage1 >= percentage2) {
             return letterGrade1;
         } else {
             return letterGrade2;
         }
+    }
+
+    static getPercentage(letterGrade) {
+        return LetterGrade.#percentage[letterGrade];
     }
 }
 
