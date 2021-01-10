@@ -277,7 +277,7 @@ class Course {
                                     <p class="title is-2"></p>
                                     <p class="subtitle"></p>
                                     <p class="description">
-                                        <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlapse, your final letter grade is locked to this grade, regardless of any uncompleted activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
+                                        <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlapse, your final letter grade is locked to this grade, regardless of any incompleted activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
                                         <i class="material-icons">info</i> The calculator only provides a general reference of your grade, please subject to your professor.
                                     </p>
                                 </div>
