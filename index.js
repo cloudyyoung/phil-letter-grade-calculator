@@ -59,4 +59,9 @@ $(document).ready(() => {
     } else {
         $(".course-item").first().click();
     }
+
+    Course.list.forEach((course) => {
+        course.restore();
+    });
+
 });

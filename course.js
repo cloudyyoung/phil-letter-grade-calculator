@@ -125,14 +125,14 @@ class Course {
         this.components.forEach((component) => {
             let componentHtml = `
                 <!-- ${component.title} -->
-                <div class="column">
+                <div class="column ${component}">
                     <h5 class="title is-5">${component.title}</h5>
             `;
 
             for (let t = 1; t <= component.units; t++) {
                 componentHtml += `
                     <!-- Item: Unit ${t} -->
-                    <div class="columns is-mobile ${component.code} activity" activity="${this.code}-${component.code}-${t}">
+                    <div class="columns is-mobile activity ${component.code} ${t} ${this.code}-${component.code}-${t}" activity="${this.code}-${component.code}-${t}">
                         <!-- Item name -->
                         <div class="column name ${component.code}">
                             ${component.title} ${t}
@@ -405,6 +405,16 @@ class Course {
         return [tentativeLetterGrade, tentativeLetterGradeRuleId, achievedLetterGrade, achievedLetterGradeRuleId];
 
     }
+
+    restore() {
+        this.components.forEach((component) => {
+            for (let t = 1; t <= this.units; t++) {
+                let activityCode = `${this.code}-${component.code}-${t}`;
+                let componentsGrade = localStorage.getItem(activityCode);
+                $(`.${activityCode} .choices-grade .button.${componentsGrade}`).click();
+            }
+        });
+    }
 }
 
 class Rule {
@@ -459,7 +469,6 @@ class LetterGrade {
             return letterGrade2;
         }
     }
-
 }
 
 Course.add({
