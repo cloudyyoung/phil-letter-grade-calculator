@@ -254,7 +254,7 @@ class Course {
                                     <p class="subtitle">Tentative Letter Grade</p>
                                     <p class="description">
                                         This is your tentative letter grade, and also the maximum grade you can potentially get, based on your current completed activities.<br>
-                                        It assumes all the rest activities that has not completed yet are going to be completed with the highest mark.
+                                        It assumes all the incompleted activities are going to be completed with the highest mark.
                                     </p>
                                 </div>
                             </div>
