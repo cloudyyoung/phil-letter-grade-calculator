@@ -25,7 +25,7 @@ $.letterGrades = {
     },
     calculate: function (course) {
         // Initialize grades amount
-        if (course.gradingCountTotal) {
+        if (course.countTotal) {
             $.grades[course.code].total = 0;
         }
         course.components.forEach((component) => {
@@ -41,7 +41,7 @@ $.letterGrades = {
                 let grade = $.grades[course.code][component.code][t];
                 $.grades[course.code][component.code][grade]++;
 
-                if (course.gradingCountTotal && course.gradingCountTotalGrades.includes(grade)) {
+                if (course.countTotal && course.countTotalcomponentsGrades.includes(grade)) {
                     $.grades[course.code].total++;
                 }
             }
@@ -52,7 +52,7 @@ $.letterGrades = {
         $.grades[course.code].tentativeLetterGrade = "F";
 
         // Match for grading rules to calculate Letter Grade
-        course.gradingRules.forEach((rule) => {
+        course.rules.forEach((rule) => {
             let matchAchieved = true;
             let matchTentative = true;
             let totalTentative = 0;

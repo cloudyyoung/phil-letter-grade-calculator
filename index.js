@@ -8,33 +8,33 @@ $.initialize = function (course) {
     $.grades[course.code] = {};
 
     // Intialize count total
-    if (!course.gradingCountTotal == undefined) {
-        course.gradingCountTotal = false;
-        course.gradingCountTotalGrades = [];
+    if (!course.countTotal == undefined) {
+        course.countTotal = false;
+        course.countTotalcomponentsGrades = [];
     }
 
     // Sort grading rules by letter grade
-    course.gradingRules.sort(function (first, second) {
+    course.rules.sort(function (first, second) {
         return $.letterGrades.percentage[second.grade] - $.letterGrades.percentage[first.grade];
     });
 
     // Establish dictionary for item grade code and item grade object
-    course.gradingActivityGradesDictionary = {};
-    course.gradingActivityGrades.forEach((activityGrade) => {
-        course.gradingActivityGradesDictionary[activityGrade.code] = activityGrade;
+    course.componentsGradesDictionary = {};
+    course.componentsGrades.forEach((activityGrade) => {
+        course.componentsGradesDictionary[activityGrade.code] = activityGrade;
     });
 
     // Intialize F grade
-    course.gradingRules.push({ grade: "F", total: 0 });
+    course.rules.push({ grade: "F", total: 0 });
 
     // Initialize rule index
     let ruleIndex = 0;
-    course.gradingRules.forEach((rule) => {
+    course.rules.forEach((rule) => {
         rule.index = ruleIndex++;
     });
 
     // Sort item grades from low to high
-    course.gradingActivityGrades.sort(function (first, second) {
+    course.componentsGrades.sort(function (first, second) {
         return first.worth - second.worth;
     });
 
@@ -45,14 +45,14 @@ $.initialize = function (course) {
 
         // Initialize item grades for current component
         if (component.grades) {
-            course.gradingActivityGrades.forEach((activityGrade) => {
+            course.componentsGrades.forEach((activityGrade) => {
                 if (component.grades.includes(activityGrade.code)) {
                     component.grades.splice(activityGrade.code, 1);
                     component.grades.push(activityGrade);
                 }
             });
         } else {
-            component.grades = course.gradingActivityGrades;
+            component.grades = course.componentsGrades;
         }
 
         // Sort item grades from low to high
@@ -137,7 +137,7 @@ $.display = function (course) {
 
     // Build letter grade table body
     let tableBody = ``;
-    course.gradingRules.forEach((rule) => {
+    course.rules.forEach((rule) => {
         tableBody += `<tr class="rule-item rule-${rule.index} grade-${$.letterGrades.percentage[rule.grade]} grade-${rule.grade}">`;
         tableBody += `<th>${rule.grade}</th>`;
 
@@ -146,9 +146,9 @@ $.display = function (course) {
             let requirements = rule[component.code];
 
             $.each(requirements, (activityGrade, amount) => {
-                let title = course.gradingActivityGradesDictionary[activityGrade].title;
-                let icon = course.gradingActivityGradesDictionary[activityGrade].icon;
-                let text = course.gradingActivityGradesDictionary[activityGrade].text;
+                let title = course.componentsGradesDictionary[activityGrade].title;
+                let icon = course.componentsGradesDictionary[activityGrade].icon;
+                let text = course.componentsGradesDictionary[activityGrade].text;
                 ruleItemBody += `
                     <div class="column is-narrow">
                         <div class="columns is-mobile" title="${title}: ${amount}" style="width: 60px;">
@@ -177,7 +177,7 @@ $.display = function (course) {
             tableBody += `<td><div class="columns">${ruleItemBody}</div></td>`;
         });
 
-        if (course.gradingCountTotal) {
+        if (course.countTotal) {
             tableBody += `<td>${rule.total}</td>`;
         }
 
@@ -199,7 +199,7 @@ $.display = function (course) {
                                     <tr>
                                         <th><abbr title="Letter Grade">Grade</abbr></th>
                                         ${tableHead}
-                                        <th class="${course.gradingCountTotal ? "" : "is-hidden"}">Total</th>
+                                        <th class="${course.countTotal ? "" : "is-hidden"}">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -265,38 +265,36 @@ $(document).ready(() => {
 
     $(".choices-grade .choice").click(function (e) {
         // Read data from DOM
-        let course = $(this).closest(".course").attr("course");
-        let gradingItemType = $(this).closest(".activity").attr("itemType");
-        let gradingItemNo = $(this).closest(".activity").attr("itemNo");
-        let grade = $(this).attr("grade");
+        let activity = $(this).closest(".activity").attr("activity");
+        let componentGrade = $(this).attr("grade");
 
         // Change state of item grade choice
         if ($(this).hasClass("checked")) {
             $(this).removeClass("checked");
             $(this).closest(".activity").removeClass("active");
-            $.grades[course][gradingItemType][gradingItemNo] = null;
+            $.cookie(activity, null);
         } else {
             $(this).parent().children().removeClass("checked");
             $(this).addClass("checked");
             $(this).closest(".activity").addClass("active");
-            $.grades[course][gradingItemType][gradingItemNo] = grade;
+            $.cookie(activity, componentGrade);
         }
 
-        $.letterGrades.calculate($[course]);
-        $.cookie("grades", $.grades, { expires: 365 });
+        // $.letterGrades.calculate($[course]);
+        // $.cookie("grades", $.grades, { expires: 365 });
 
-        // Update letter grade table highlights
-        $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected").removeClass("is-locked");
-        if ($.grades[course].achievedLetterGradeRuleIndex == $.grades[course].tentativeLetterGradeRuleIndex) {
-            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].achievedLetterGradeRuleIndex}`).addClass("is-selected is-locked");
-        } else {
-            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].achievedLetterGradeRuleIndex}`).addClass("is-selected");
-            $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].tentativeLetterGradeRuleIndex}`).addClass("is-selected");
-        }
+        // // Update letter grade table highlights
+        // $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected").removeClass("is-locked");
+        // if ($.grades[course].achievedLetterGradeRuleIndex == $.grades[course].tentativeLetterGradeRuleIndex) {
+        //     $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].achievedLetterGradeRuleIndex}`).addClass("is-selected is-locked");
+        // } else {
+        //     $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].achievedLetterGradeRuleIndex}`).addClass("is-selected");
+        //     $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].tentativeLetterGradeRuleIndex}`).addClass("is-selected");
+        // }
 
-        // Upate the grades on letter grade cards
-        $(`.${course} .letter-grade.card.tentative-letter-grade .grade`).text($.grades[course].tentativeLetterGrade);
-        $(`.${course} .letter-grade.card.achieved-letter-grade .grade`).text($.grades[course].achievedLetterGrade);
+        // // Upate the grades on letter grade cards
+        // $(`.${course} .letter-grade.card.tentative-letter-grade .grade`).text($.grades[course].tentativeLetterGrade);
+        // $(`.${course} .letter-grade.card.achieved-letter-grade .grade`).text($.grades[course].achievedLetterGrade);
     });
 
     // Default select A+ and F

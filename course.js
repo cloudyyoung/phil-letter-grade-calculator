@@ -1,39 +1,358 @@
 
-$.PHIL279 = {
+class Course {
+    static list = [];
+
+    title;
+    code;
+    components;
+    units;
+    componentsGrades;
+    countTotal;
+    countTotalcomponentsGrades;
+    rules;
+
+    static add(object) {
+        Course.list.push(new Course(object));
+    }
+
+    static get(code) {
+        let ret = null
+        Course.list.forEach((course) => {
+            if (course.code == code) {
+                ret = course;
+                return;
+            }
+        });
+        return ret;
+    }
+
+    constructor(object) {
+        this.title = object.title ? object.title : "";
+        this.code = object.code ? object.code : "";
+        this.components = object.components ? object.components : [];
+        this.units = object.units ? object.units : 0;
+        this.componentsGrades = object.componentsGrades ? object.componentsGrades : [];
+        this.countTotal = object.countTotal ? object.countTotal : false;
+
+        // Rules
+        let rules = object.rules ? object.rules : [];
+        this.rules = [];
+        rules.forEach((rule) => {
+            this.rules.push(new Rule(rule));
+        });
+
+        this.initialize();
+        this.display();
+    }
+
+    getProperty(properties, key) {
+        if (typeof key == "number") {
+            return properties[key];
+        } else {
+            let ret = null;
+            properties.forEach((property) => {
+                if (property.code == key) {
+                    ret = property;
+                    return;
+                }
+            });
+            return ret;
+        }
+    }
+
+    getComponent(key) {
+        return this.getProperty(this.components, key);
+    }
+
+    getComponentsGrade(key) {
+        return this.getProperty(this.componentsGrades, key);
+    }
+
+    initialize() {
+        // Sort grading rules by letter grade
+        this.rules.sort(function (first, second) {
+            return $.letterGrades.percentage[second.grade] - $.letterGrades.percentage[first.grade];
+        });
+
+        // Intialize F grade
+        this.rules.push(new Rule({ grade: "F" }));
+
+        // Initialize rule index
+        let ruleIndex = 0;
+        this.rules.forEach((rule) => {
+            rule.index = ruleIndex++;
+        });
+
+        // Sort activity grades from low to high
+        this.componentsGrades.sort(function (first, second) {
+            return first.worth - second.worth;
+        });
+
+        // Build each component
+        this.components.forEach((component) => {
+            // Initialize item grades for current component
+            if (component.grades) {
+                this.componentsGrades.forEach((activityGrade) => {
+                    if (component.grades.includes(activityGrade.code)) {
+                        component.grades.splice(activityGrade.code, 1);
+                        component.grades.push(activityGrade);
+                    }
+                });
+            } else {
+                component.grades = this.componentsGrades;
+            }
+
+            // Sort item grades from low to high
+            component.grades.sort(function (first, second) {
+                return first.worth - second.worth;
+            });
+
+            // Initialize unit number
+            if (!component.units) {
+                component.units = this.units;
+            }
+        });
+    }
+
+    display() {
+        // Insert course into course select tabs
+        $(".course-select.tabs ul").append(`<li class="${this.code} course-item" course="${this.code}"><a href="#${this.code}">${this.title}</a></li>`);
+
+        // Build course html
+        let courseHtml = `
+            <div class="course ${this.code} is-hidden" course="${this.code}" id="${this.code}">
+                <section class="section">
+                    <div class="container">
+                        <div class="columns components">
+        `;
+
+        // Build activity form
+        this.components.forEach((component) => {
+            let componentHtml = `
+                <!-- ${component.title} -->
+                <div class="column">
+                    <h5 class="title is-5">${component.title}</h5>
+            `;
+
+            for (let t = 1; t <= component.units; t++) {
+                componentHtml += `
+                    <!-- Item: Unit ${t} -->
+                    <div class="columns is-mobile ${component.code} activity" activity="${this.code}-${component.code}-${t}">
+                        <!-- Item name -->
+                        <div class="column name ${component.code}">
+                            ${component.title} ${t}
+                        </div>
+                        <!-- Choices -->
+                        <div class="column">
+                            <div class="control choices-grade">
+                `;
+
+                component.grades.forEach((activityGrade) => {
+                    componentHtml += `
+                        <!-- ${activityGrade.title} -->
+                        <a class="button is-white is-rounded choice ${activityGrade.code}" title="${activityGrade.title}" grade="${activityGrade.code}">
+                            <i class="material-icons ${activityGrade.icon ? "" : "is-hidden"}">${activityGrade.icon}</i>
+                            <i class="material-text ${activityGrade.text ? "" : "is-hidden"}">${activityGrade.text}</i>
+                        </a>
+                    `;
+                });
+
+                componentHtml += `
+                                </div>
+                            </div>
+                        </div>
+                `;
+            }
+            componentHtml += `</div>`;
+            courseHtml += componentHtml;
+        });
+
+        courseHtml += `
+                        </div>
+                    </div>
+                </section>
+        `;
+
+        // Build letter grade table header
+        let tableHead = ``;
+        this.components.forEach((component) => {
+            tableHead += `<th>${component.title}</th>`;
+        });
+
+        // Build letter grade table body
+        let tableBody = ``;
+        this.rules.forEach((rule) => {
+            tableBody += `<tr class="rule-item rule-${rule.index} grade-${$.letterGrades.percentage[rule.grade]} grade-${rule.grade}">`;
+            tableBody += `<th>${rule.grade}</th>`;
+
+            this.components.forEach((component) => {
+                tableBody += `<td><div class="columns">`;
+
+                if (rule.hasRequirements(component.code)) {
+                    $.each(rule.requirements[component.code], (activityGradeCode, amount) => {
+                        let activityGrade = this.getComponentsGrade(activityGradeCode);
+                        tableBody += `
+                            <div class="column is-narrow">
+                                <div class="columns is-mobile" title="${activityGrade.title}: ${amount}" style="width: 60px;">
+                                    <div class="column is-1">
+                                        <i class="material-icons ${activityGrade.icon ? "" : "is-hidden"}">${activityGrade.icon}</i>
+                                        <i class="material-text ${activityGrade.text ? "" : "is-hidden"}">${activityGrade.text}</i>
+                                    </div>
+                                    <div class="column is-narrow"><span>${amount}</span></div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    tableBody += `
+                        <div class="column is-narrow">
+                            <div class="columns is-mobile" title="None">
+                                <div class="column is-1">
+                                    <i class="material-icons">remove</i>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                tableBody += `</div></td>`;
+            });
+
+            if (this.countTotal) {
+                tableBody += `<td>${rule.total}</td>`;
+            }
+
+            tableBody += `</tr>`;
+        });
+
+        courseHtml += `
+                <section class="section">
+                    <div class="container">
+
+                    <div class="columns">
+                        <div class="column is-8">
+                            
+                            <!-- Letter Grade Table -->
+                            <div class="table-container">
+                                <table class="table is-hoverable is-fullwidth letter-grade">
+                                    <thead>
+                                        <tr>
+                                            <th><abbr title="Letter Grade">Grade</abbr></th>
+                                            ${tableHead}
+                                            <th class="${this.countTotal ? "" : "is-hidden"}">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${tableBody}
+                                    </tbody>
+                                </table >
+                            </div>
+
+                        </div>
+
+                        <div class="column">
+
+                            <!- Tentative Grade ->
+                            <div class="card is-shadowless letter-grade tentative-letter-grade">
+                                <div class="card-content">
+                                    <p class="title is-2 grade">A+</p>
+                                    <p class="subtitle">Tentative Letter Grade</p>
+                                    <p class="description">
+                                        This is your tentative letter grade, and also the maximum grade you can potentially get, based on your current completed activities.<br>
+                                        It assumes all the rest activities that has not completed yet are going to be completed with the highest mark.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!- Achieved Grade ->
+                            <div class="card is-shadowless letter-grade achieved-letter-grade">
+                                <div class="card-content">
+                                    <p class="title is-2 grade">F</p>
+                                    <p class="subtitle">Achieved Letter Grade</p>
+                                    <p class="description">
+                                        This is the letter grade you have already achieved, your final grade will never be lower than this grade. <br>
+                                        If you stop completing any activities at this point, then this will be your final letter grade by the end of course.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!- Disclaimer ->
+                            <div class="card is-shadowless disclaimer">
+                                <div class="card-content">
+                                    <p class="title is-2"></p>
+                                    <p class="subtitle"></p>
+                                    <p class="description">
+                                        <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlapse, your final letter grade is locked to this grade, regardless of any uncompleted activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
+                                        <i class="material-icons">info</i> The calculator only provides a general reference of your grade, please subject to your professor.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        `;
+
+        $(`body`).append(courseHtml);
+    }
+}
+
+class Rule {
+    grade;
+    total;
+    requirements;
+
+    constructor(obj) {
+        this.grade = obj.grade ? obj.grade : "F";
+        this.total = obj.total ? obj.total : 0;
+        this.requirements = obj.requirements ? obj.requirements : {};
+    }
+
+    hasRequirements(code) {
+        for (let key in this.requirements) {
+            if (code && key == code) {
+                return true;
+            } else if (!code) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+Course.add({
     title: "PHIL 279",
     code: "PHIL-279",
     components: [
         { title: "Problem Set", code: "problem-set" },
         { title: "Quiz", code: "quiz" },
-        { title: "Challenge Problem", code: "challenge-problem", grades: ["incomplete", "complete"] },
+        { title: "Challenge Problem", code: "challenge-problem", componentsGrades: ["incomplete", "complete"] },
     ],
     units: 12, // the number of units/amount for each component
-    gradingActivityGrades: [ // possible grades for each graded item, default is all of them
+    componentsGrades: [ // possible grades for each graded item, default is all of them
         { title: "Complete+", code: "complete-plus", icon: "done_all", worth: 2 },
         { title: "Complete", code: "complete", icon: "done", worth: 1 },
         { title: "Incomplete", code: "incomplete", icon: "remove", worth: 0 },
     ],
-    gradingCountTotal: true, // If total amount is a condition for final letter grade
-    gradingCountTotalGrades: ["complete", "complete-plus"], // Item grades that counts towards the total amount
-    gradingRules: [
-        { grade: "A+", "problem-set": { "complete-plus": 12 }, "quiz": { "complete-plus": 12 }, "challenge-problem": { "complete": 12 }, total: 36 },
-        { grade: "A", "problem-set": { "complete": 12, "complete-plus": 10 }, "quiz": { "complete": 12, "complete-plus": 10 }, "challenge-problem": { "complete": 12 }, total: 36 },
-        { grade: "A-", "problem-set": { "complete": 11, "complete-plus": 8 }, "quiz": { "complete": 11, "complete-plus": 8 }, "challenge-problem": { "complete": 11 }, total: 33 },
-        { grade: "B+", "problem-set": { "complete": 10 }, "quiz": { "complete": 10 }, "challenge-problem": { "complete": 10 }, total: 32 },
-        { grade: "B", "problem-set": { "complete": 10 }, "quiz": { "complete": 10 }, "challenge-problem": { "complete": 10 }, total: 30 },
-        { grade: "B-", "problem-set": { "complete": 8 }, "quiz": { "complete": 8 }, "challenge-problem": { "complete": 8 }, total: 28 },
-        { grade: "C+", "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 }, total: 26 },
-        { grade: "C", "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 }, total: 24 },
-        { grade: "C-", "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 }, total: 22 },
-        { grade: "D+", "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 }, total: 20 },
-        { grade: "D", "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 }, total: 18 },
+    countTotal: true, // If total amount is a condition for final letter grade
+    countTotalcomponentsGrades: ["complete", "complete-plus"], // Item grades that counts towards the total amount
+    rules: [
+        { grade: "A+", total: 36, requirements: { "problem-set": { "complete-plus": 12 }, "quiz": { "complete-plus": 12 }, "challenge-problem": { "complete": 12 } } },
+        { grade: "A", total: 36, requirements: { "problem-set": { "complete": 12, "complete-plus": 10 }, "quiz": { "complete": 12, "complete-plus": 10 }, "challenge-problem": { "complete": 12 } } },
+        { grade: "A-", total: 33, requirements: { "problem-set": { "complete": 11, "complete-plus": 8 }, "quiz": { "complete": 11, "complete-plus": 8 }, "challenge-problem": { "complete": 11 } } },
+        { grade: "B+", total: 32, requirements: { "problem-set": { "complete": 10 }, "quiz": { "complete": 10 }, "challenge-problem": { "complete": 10 } } },
+        { grade: "B", total: 30, requirements: { "problem-set": { "complete": 10 }, "quiz": { "complete": 10 }, "challenge-problem": { "complete": 10 } } },
+        { grade: "B-", total: 28, requirements: { "problem-set": { "complete": 8 }, "quiz": { "complete": 8 }, "challenge-problem": { "complete": 8 } } },
+        { grade: "C+", total: 26, requirements: { "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 } } },
+        { grade: "C", total: 24, requirements: { "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 } } },
+        { grade: "C-", total: 22, requirements: { "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 } } },
+        { grade: "D+", total: 20, requirements: { "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 } } },
+        { grade: "D", total: 18, requirements: { "problem-set": { "complete": 6 }, "quiz": { "complete": 6 }, "challenge-problem": { "complete": 6 } } },
     ]
-};
-$.initialize($.PHIL279);
-$.display($.PHIL279);
+});
 
-
-$.PHIL379 = {
+Course.add({
     title: "PHIL 379",
     code: "PHIL-379",
     components: [
@@ -44,7 +363,7 @@ $.PHIL379 = {
         { title: "Group Work", code: "group-work", units: 5, grades: ["incomplete", "submit"] }, // override default units 10 to 5
     ],
     units: 10, // the number of units/amount for each component
-    gradingActivityGrades: [
+    componentsGrades: [
         // EMRN
         { title: "Exemplary", code: "E", text: "E", worth: 4 },
         { title: "Meet Expectation", code: "M", text: "M", worth: 3 },
@@ -57,24 +376,22 @@ $.PHIL379 = {
         { title: "Submit", code: "submit", icon: "done", worth: 1 },
         { title: "Incomplete", code: "incomplete", icon: "remove", worth: 0 },
     ],
-    gradingRules: [
-        { grade: "A+", "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 9 }, "challenge-problem": { "M": 3, "E": 3 }, "group-work": { "submit": 5 } },
-        { grade: "A", "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 5 } },
-        { grade: "A-", "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } },
+    rules: [
+        { grade: "A+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 9 }, "challenge-problem": { "M": 3, "E": 3 }, "group-work": { "submit": 5 } } },
+        { grade: "A", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 5 } } },
+        { grade: "A-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } } },
 
-        { grade: "B+", "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 4 } },
-        { grade: "B+", "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } },
-        { grade: "B", "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 4 } },
-        { grade: "B-", "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 3 } },
+        { grade: "B+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 4 } } },
+        { grade: "B+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } } },
+        { grade: "B", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 4 } } },
+        { grade: "B-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 3 } } },
 
-        { grade: "C+", "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 8, "E": 1 }, "group-work": { "submit": 3 } },
-        { grade: "C+", "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 3 } },
-        { grade: "C", "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 }, "group-work": { "submit": 3 } },
-        { grade: "C-", "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 } },
+        { grade: "C+", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 8, "E": 1 }, "group-work": { "submit": 3 } } },
+        { grade: "C+", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 3 } } },
+        { grade: "C", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 }, "group-work": { "submit": 3 } } },
+        { grade: "C-", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 } } },
 
-        { grade: "D+", "quiz": { "complete": 5 }, "weekly-test": { "pass": 5 }, "basic-problem": { "M": 6 } },
-        { grade: "D", "quiz": { "complete": 5 }, "weekly-test": { "pass": 5 }, "basic-problem": { "R": 5, "M": 3 } },
+        { grade: "D+", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 5 }, "basic-problem": { "M": 6 } } },
+        { grade: "D", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 5 }, "basic-problem": { "R": 5, "M": 3 } } },
     ]
-};
-$.initialize($.PHIL379);
-$.display($.PHIL379);
+});
