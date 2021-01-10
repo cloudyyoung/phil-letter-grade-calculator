@@ -6,6 +6,12 @@ html, body{
     --primary-color: #000;
     --primary-color-hover:  rgba(117, 117, 117, 0.1);
     --primary-color-selected:  rgba(117, 117, 117, 0.12);
+
+    user-select:none;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
 }
 
 .section{
