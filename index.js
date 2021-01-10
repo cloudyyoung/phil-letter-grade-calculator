@@ -10,7 +10,7 @@ $.initialize = function (course) {
     // Intialize count total
     if (!course.countTotal == undefined) {
         course.countTotal = false;
-        course.countTotalcomponentsGrades = [];
+        course.countTotalComponentsGrades = [];
     }
 
     // Sort grading rules by letter grade
@@ -265,36 +265,39 @@ $(document).ready(() => {
 
     $(".choices-grade .choice").click(function (e) {
         // Read data from DOM
-        let activity = $(this).closest(".activity").attr("activity");
-        let componentGrade = $(this).attr("grade");
+        let courseCode = $(this).closest(".course").attr("course");
+        let activityCode = $(this).closest(".activity").attr("activity");
+        let componentGradeCode = $(this).attr("grade");
 
         // Change state of item grade choice
         if ($(this).hasClass("checked")) {
             $(this).removeClass("checked");
             $(this).closest(".activity").removeClass("active");
-            $.cookie(activity, null);
+            localStorage.removeItem(activityCode);
         } else {
             $(this).parent().children().removeClass("checked");
             $(this).addClass("checked");
             $(this).closest(".activity").addClass("active");
-            $.cookie(activity, componentGrade);
+            localStorage.setItem(activityCode, componentGradeCode);
         }
 
-        // $.letterGrades.calculate($[course]);
-        // $.cookie("grades", $.grades, { expires: 365 });
+        let course = Course.get(courseCode);
+        let [tentativeLetterGrade, tentativeLetterGradeRuleId, achievedLetterGrade, achievedLetterGradeRuleId] = course.calculate(course);
 
-        // // Update letter grade table highlights
-        // $(`.${course} .letter-grade.table .rule-item`).removeClass("is-selected").removeClass("is-locked");
-        // if ($.grades[course].achievedLetterGradeRuleIndex == $.grades[course].tentativeLetterGradeRuleIndex) {
-        //     $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].achievedLetterGradeRuleIndex}`).addClass("is-selected is-locked");
-        // } else {
-        //     $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].achievedLetterGradeRuleIndex}`).addClass("is-selected");
-        //     $(`.${course} .letter-grade.table .rule-item.rule-${$.grades[course].tentativeLetterGradeRuleIndex}`).addClass("is-selected");
-        // }
+        console.log(tentativeLetterGrade, achievedLetterGrade);
 
-        // // Upate the grades on letter grade cards
-        // $(`.${course} .letter-grade.card.tentative-letter-grade .grade`).text($.grades[course].tentativeLetterGrade);
-        // $(`.${course} .letter-grade.card.achieved-letter-grade .grade`).text($.grades[course].achievedLetterGrade);
+        // Update letter grade table highlights
+        $(`.${courseCode} .letter-grade.table .rule-item`).removeClass("is-selected").removeClass("is-locked");
+        if (achievedLetterGradeRuleId == tentativeLetterGradeRuleId) {
+            $(`.${courseCode} .letter-grade.table .rule-item.rule-${achievedLetterGradeRuleId}`).addClass("is-selected is-locked");
+        } else {
+            $(`.${courseCode} .letter-grade.table .rule-item.rule-${achievedLetterGradeRuleId}`).addClass("is-selected");
+            $(`.${courseCode} .letter-grade.table .rule-item.rule-${tentativeLetterGradeRuleId}`).addClass("is-selected");
+        }
+
+        // Upate the grades on letter grade cards
+        $(`.${courseCode} .letter-grade.card.tentative-letter-grade .grade`).text(tentativeLetterGrade);
+        $(`.${courseCode} .letter-grade.card.achieved-letter-grade .grade`).text(achievedLetterGrade);
     });
 
     // Default select A+ and F

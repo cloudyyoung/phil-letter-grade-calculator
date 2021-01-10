@@ -8,7 +8,7 @@ class Course {
     units;
     componentsGrades;
     countTotal;
-    countTotalcomponentsGrades;
+    countTotalComponentsGrades;
     rules;
 
     static add(object) {
@@ -33,6 +33,7 @@ class Course {
         this.units = object.units ? object.units : 0;
         this.componentsGrades = object.componentsGrades ? object.componentsGrades : [];
         this.countTotal = object.countTotal ? object.countTotal : false;
+        this.countTotalComponentsGrades = object.countTotalComponentsGrades ? object.countTotalComponentsGrades : [];
 
         // Rules
         let rules = object.rules ? object.rules : [];
@@ -77,12 +78,6 @@ class Course {
         // Intialize F grade
         this.rules.push(new Rule({ grade: "F" }));
 
-        // Initialize rule index
-        let ruleIndex = 0;
-        this.rules.forEach((rule) => {
-            rule.index = ruleIndex++;
-        });
-
         // Sort activity grades from low to high
         this.componentsGrades.sort(function (first, second) {
             return first.worth - second.worth;
@@ -91,19 +86,19 @@ class Course {
         // Build each component
         this.components.forEach((component) => {
             // Initialize item grades for current component
-            if (component.grades) {
-                this.componentsGrades.forEach((activityGrade) => {
-                    if (component.grades.includes(activityGrade.code)) {
-                        component.grades.splice(activityGrade.code, 1);
-                        component.grades.push(activityGrade);
+            if (component.componentsGrades) {
+                this.componentsGrades.forEach((componentsGrade) => {
+                    if (component.componentsGrades.includes(componentsGrade.code)) {
+                        component.componentsGrades.splice(componentsGrade.code, 1);
+                        component.componentsGrades.push(componentsGrade);
                     }
                 });
             } else {
-                component.grades = this.componentsGrades;
+                component.componentsGrades = this.componentsGrades;
             }
 
             // Sort item grades from low to high
-            component.grades.sort(function (first, second) {
+            component.componentsGrades.sort(function (first, second) {
                 return first.worth - second.worth;
             });
 
@@ -147,7 +142,7 @@ class Course {
                             <div class="control choices-grade">
                 `;
 
-                component.grades.forEach((activityGrade) => {
+                component.componentsGrades.forEach((activityGrade) => {
                     componentHtml += `
                         <!-- ${activityGrade.title} -->
                         <a class="button is-white is-rounded choice ${activityGrade.code}" title="${activityGrade.title}" grade="${activityGrade.code}">
@@ -182,7 +177,7 @@ class Course {
         // Build letter grade table body
         let tableBody = ``;
         this.rules.forEach((rule) => {
-            tableBody += `<tr class="rule-item rule-${rule.index} grade-${$.letterGrades.percentage[rule.grade]} grade-${rule.grade}">`;
+            tableBody += `<tr class="rule-item rule-${rule.id} grade-${$.letterGrades.percentage[rule.grade]} grade-${rule.grade}">`;
             tableBody += `<th>${rule.grade}</th>`;
 
             this.components.forEach((component) => {
@@ -296,9 +291,126 @@ class Course {
 
         $(`body`).append(courseHtml);
     }
+
+    calculate() {
+        // Variables
+        let total = 0;
+        let componentsGradesCount = {};
+        let achievedLetterGrade;
+        let tentativeLetterGrade;
+        let achievedLetterGradeRuleId;
+        let tentativeLetterGradeRuleId;
+
+        // Initialize componentGradesCount
+        this.components.forEach((component) => {
+            componentsGradesCount[component.code] = {};
+            componentsGradesCount[component.code]["null"] = 0;
+            component.componentsGrades.forEach((componentGrade) => {
+                componentsGradesCount[component.code][componentGrade.code] = 0;
+            });
+        });
+
+        // Calculate total amount for each grades from each component
+        this.components.forEach((component) => {
+            for (let t = 1; t <= this.units; t++) {
+                let componentGradeCode = localStorage.getItem(`${this.code}-${component.code}-${t}`);
+                componentsGradesCount[component.code][componentGradeCode]++;
+
+                if (this.countTotal && this.countTotalComponentsGrades.includes(componentGradeCode)) {
+                    total++;
+                }
+            }
+        });
+
+        // Set default letter grade & tentative letter grade
+        componentsGradesCount.achievedLetterGrade = "F";
+        componentsGradesCount.tentativeLetterGrade = "F";
+
+        // Match for grading rules to calculate Letter Grade
+        this.rules.forEach((rule) => {
+            let matchAchieved = true;
+            let matchTentative = true;
+            let totalTentative = 0;
+
+            this.components.forEach((component) => {
+                let requirements = rule.requirements[component.code];
+
+                // Make components grade dictionary
+                let componentsGradesWorth = {};
+                component.componentsGrades.forEach((componentsGrade) => {
+                    componentsGradesWorth[componentsGrade.code] = componentsGrade.worth;
+                    componentsGradesWorth[componentsGrade.worth] = componentsGrade.code;
+                });
+
+                // If match all component requirements & their amount
+                $.each(requirements, (componentsGradeCode, amount) => {
+                    let gainedAmountAchieved = componentsGradesCount[component.code][componentsGradeCode];
+
+                    let currentWorth = componentsGradesWorth[componentsGradeCode];
+                    if (currentWorth > 0) {
+                        while (componentsGradesWorth[++currentWorth] != undefined) {
+                            let componentsGradeCodeNext = componentsGradesWorth[currentWorth];
+                            gainedAmountAchieved += componentsGradesCount[component.code][componentsGradeCodeNext]
+                        }
+                    }
+
+                    // Assume all not-selected items are all complete-plus
+                    let gainedAmountTentative = gainedAmountAchieved + componentsGradesCount[component.code]["null"];
+                    totalTentative += gainedAmountTentative;
+
+                    // Match rule amount
+                    if (gainedAmountAchieved < amount) {
+                        matchAchieved = false;
+                    }
+
+                    // Match rule amount
+                    if (gainedAmountTentative < amount) {
+                        matchTentative = false;
+                    }
+                });
+
+            });
+
+            // If match total items
+            if (this.countTotal && total < rule.total) {
+                matchAchieved = false;
+            }
+
+            // If match total items
+            if (this.countTotal && totalTentative < rule.total) {
+                matchTentative = false;
+            }
+
+            // If match the current grading rule in general
+            if (matchAchieved) {
+                let letterGrade = LetterGrade.max(achievedLetterGrade, rule.grade);
+
+                if (letterGrade == rule.grade) {
+                    achievedLetterGrade = letterGrade;
+                    achievedLetterGradeRuleId = rule.id;
+                }
+            }
+
+            // If match the current grading rule in general
+            if (matchTentative) {
+                let letterGrade = LetterGrade.max(tentativeLetterGrade, rule.grade);
+
+                if (letterGrade == rule.grade) {
+                    tentativeLetterGrade = letterGrade;
+                    tentativeLetterGradeRuleId = rule.id;
+                }
+            }
+        });
+
+        return [tentativeLetterGrade, tentativeLetterGradeRuleId, achievedLetterGrade, achievedLetterGradeRuleId];
+
+    }
 }
 
 class Rule {
+    static #nextId = 0;
+
+    id;
     grade;
     total;
     requirements;
@@ -307,6 +419,7 @@ class Rule {
         this.grade = obj.grade ? obj.grade : "F";
         this.total = obj.total ? obj.total : 0;
         this.requirements = obj.requirements ? obj.requirements : {};
+        this.id = Rule.#nextId++;
     }
 
     hasRequirements(code) {
@@ -319,6 +432,34 @@ class Rule {
         }
         return false;
     }
+}
+
+class LetterGrade {
+    static percentage = {
+        "A+": 100,
+        "A": 95,
+        "A-": 90,
+        "B+": 85,
+        "B": 80,
+        "B-": 75,
+        "C+": 70,
+        "C": 65,
+        "C-": 60,
+        "D+": 55,
+        "D": 50,
+        "F": 0
+    };
+
+    static max(letterGrade1, letterGrade2) {
+        let percentage1 = LetterGrade.percentage[letterGrade1];
+        let percentage2 = LetterGrade.percentage[letterGrade2];
+        if (percentage1 >= percentage2) {
+            return letterGrade1;
+        } else {
+            return letterGrade2;
+        }
+    }
+
 }
 
 Course.add({
@@ -336,7 +477,7 @@ Course.add({
         { title: "Incomplete", code: "incomplete", icon: "remove", worth: 0 },
     ],
     countTotal: true, // If total amount is a condition for final letter grade
-    countTotalcomponentsGrades: ["complete", "complete-plus"], // Item grades that counts towards the total amount
+    countTotalComponentsGrades: ["complete", "complete-plus"], // Item grades that counts towards the total amount
     rules: [
         { grade: "A+", total: 36, requirements: { "problem-set": { "complete-plus": 12 }, "quiz": { "complete-plus": 12 }, "challenge-problem": { "complete": 12 } } },
         { grade: "A", total: 36, requirements: { "problem-set": { "complete": 12, "complete-plus": 10 }, "quiz": { "complete": 12, "complete-plus": 10 }, "challenge-problem": { "complete": 12 } } },
@@ -356,11 +497,11 @@ Course.add({
     title: "PHIL 379",
     code: "PHIL-379",
     components: [
-        { title: "Quiz", code: "quiz", grades: ["incomplete", "complete"] },
-        { title: "Weekly Test", code: "weekly-test", grades: ["incomplete", "pass"] },
-        { title: "Basic Problem", code: "basic-problem", grades: ["N", "R", "M", "E"] },
-        { title: "Challenge Problem", code: "challenge-problem", units: 4, grades: ["N", "R", "M", "E"] },
-        { title: "Group Work", code: "group-work", units: 5, grades: ["incomplete", "submit"] }, // override default units 10 to 5
+        { title: "Quiz", code: "quiz", componentsGrades: ["incomplete", "complete"] },
+        { title: "Weekly Test", code: "weekly-test", componentsGrades: ["incomplete", "pass"] },
+        { title: "Basic Problem", code: "basic-problem", componentsGrades: ["N", "R", "M", "E"] },
+        { title: "Challenge Problem", code: "challenge-problem", units: 4, componentsGrades: ["N", "R", "M", "E"] },
+        { title: "Group Work", code: "group-work", units: 5, componentsGrades: ["incomplete", "submit"] }, // override default units 10 to 5
     ],
     units: 10, // the number of units/amount for each component
     componentsGrades: [

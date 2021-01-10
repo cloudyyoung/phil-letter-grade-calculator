@@ -41,7 +41,7 @@ $.letterGrades = {
                 let grade = $.grades[course.code][component.code][t];
                 $.grades[course.code][component.code][grade]++;
 
-                if (course.countTotal && course.countTotalcomponentsGrades.includes(grade)) {
+                if (course.countTotal && course.countTotalComponentsGrades.includes(grade)) {
                     $.grades[course.code].total++;
                 }
             }
