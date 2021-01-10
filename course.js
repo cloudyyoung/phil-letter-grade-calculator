@@ -72,7 +72,7 @@ class Course {
     initialize() {
         // Sort grading rules by letter grade
         this.rules.sort(function (first, second) {
-            return $.letterGrades.percentage[second.grade] - $.letterGrades.percentage[first.grade];
+            return LetterGrade.percentage[second.grade] - LetterGrade.percentage[first.grade];
         });
 
         // Intialize F grade
@@ -177,7 +177,7 @@ class Course {
         // Build letter grade table body
         let tableBody = ``;
         this.rules.forEach((rule) => {
-            tableBody += `<tr class="rule-item rule-${rule.id} grade-${$.letterGrades.percentage[rule.grade]} grade-${rule.grade}">`;
+            tableBody += `<tr class="rule-item rule-${rule.id} grade-${LetterGrade.percentage[rule.grade]} grade-${rule.grade}">`;
             tableBody += `<th>${rule.grade}</th>`;
 
             this.components.forEach((component) => {
