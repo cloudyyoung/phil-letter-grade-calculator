@@ -164,6 +164,14 @@ class Course {
 
         courseHtml += `
                         </div>
+
+                        <div class="notification local-storage-info">
+                            <i class="material-icons">info</i>
+                            Your grades for activities will be saved in local storage in your browser, they are not shared with anyone.
+                            When coming back, your grades for activities should still be here.
+                            However, you will lose them if you clear your browser cache, and your cleaning software might do it for you.
+                        </div>
+
                     </div>
                 </section>
         `;
@@ -221,6 +229,7 @@ class Course {
         });
 
         courseHtml += `
+                
                 <section class="section">
                     <div class="container">
 

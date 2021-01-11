@@ -181,3 +181,7 @@ html, body{
     font-size: inherit;
     margin-top: 2px;
 }
+
+.notification{
+    border-radius: 20px;
+}
