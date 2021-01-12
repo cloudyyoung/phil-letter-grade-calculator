@@ -187,11 +187,6 @@ html, body{
     color: var(--primary-color);
 }
 
-.footer{
-    /* background: transparent; */
-    /* opacity: 0.6; */
-}
-
 .footer a{
     color: #000;
     text-decoration: underline dotted;
