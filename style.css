@@ -14,8 +14,32 @@ html, body{
     -khtml-user-select:none;
 }
 
-.section{
-    overflow: auto;
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(117, 117, 117, 0.1);
+  border-radius: 50px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background:  rgba(117, 117, 117, 0.12);
+  border-radius: 50px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background:  rgba(117, 117, 117, 0.2);
+}
+
+.columns.components{
+    overflow-x: auto;
 }
 
 .PHIL-279{

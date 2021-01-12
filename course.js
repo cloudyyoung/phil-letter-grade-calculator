@@ -118,14 +118,14 @@ class Course {
             <div class="course ${this.code} is-hidden" course="${this.code}" id="${this.code}">
                 <section class="section">
                     <div class="container">
-                        <div class="columns components">
+                        <div class="columns components is-multiline">
         `;
 
         // Build activity form
         this.components.forEach((component) => {
             let componentHtml = `
                 <!-- ${component.title} -->
-                <div class="column ${component}">
+                <div class="column ${component.code} is-one-third-widescreen">
                     <h5 class="title is-5">${component.title}</h5>
             `;
 
