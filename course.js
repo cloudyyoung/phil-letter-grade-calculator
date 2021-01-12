@@ -192,7 +192,7 @@ class Course {
                 tableBody += `<td><div class="columns">`;
 
                 if (rule.hasRequirements(component.code)) {
-                    $.each(rule.requirements[component.code], (activityGradeCode, amount) => {
+                    $.each(rule.getRequirement(component.code), (activityGradeCode, amount) => {
                         let activityGrade = this.#getComponentsGrade(activityGradeCode);
                         tableBody += `
                             <div class="column is-narrow">
@@ -319,9 +319,9 @@ class Course {
             });
         });
 
-        // Calculate total amount for each grades from each component
+        // Calculate total amount for component grades from each activity
         this.components.forEach((component) => {
-            for (let t = 1; t <= this.units; t++) {
+            for (let t = 1; t <= component.units; t++) {
                 let componentGradeCode = localStorage.getItem(`${this.code}-${component.code}-${t}`);
                 componentsGradesCount[component.code][componentGradeCode]++;
 
@@ -342,7 +342,7 @@ class Course {
             let totalTentative = 0;
 
             this.components.forEach((component) => {
-                let requirements = rule.requirements[component.code];
+                let requirements = rule.getRequirement(component.code);
 
                 // Make components grade dictionary
                 let componentsGradesWorth = {};
@@ -421,24 +421,33 @@ class Rule {
     id;
     grade;
     total;
-    requirements;
+    #requirements;
 
     constructor(obj) {
         this.grade = obj.grade ? obj.grade : "F";
         this.total = obj.total ? obj.total : 0;
-        this.requirements = obj.requirements ? obj.requirements : {};
+        this.#requirements = obj.requirements ? obj.requirements : {};
         this.id = Rule.#nextId++;
     }
 
-    hasRequirements(code) {
-        for (let key in this.requirements) {
-            if (code && key == code) {
-                return true;
-            } else if (!code) {
-                return true;
-            }
+    hasRequirements() {
+        for (let key in this.#requirements) { return true; }
+        return false;
+    }
+
+    hasRequirement(code) {
+        for (let key in this.#requirements) {
+            if (key == code) return true;
         }
         return false;
+    }
+
+    getRequirements() {
+        return this.#requirements || null;
+    }
+
+    getRequirement(key) {
+        return this.#requirements[key] || null;
     }
 }
 
