@@ -188,8 +188,8 @@ html, body{
 }
 
 .footer{
-    background: transparent;
-    opacity: 0.6;
+    /* background: transparent; */
+    /* opacity: 0.6; */
 }
 
 .footer a{
