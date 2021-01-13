@@ -1,7 +1,7 @@
 'use strict';
 
 class Course {
-    static list = [];
+    // static list = [];
 
     static add(object) {
         Course.list.push(new Course(object));
@@ -406,6 +406,7 @@ class Course {
         return [tentativeLetterGrade, tentativeLetterGradeRuleId, achievedLetterGrade, achievedLetterGradeRuleId];
     }
 }
+Course.list = [];
 
 class Rule {
     static _nextId = 0;
@@ -439,20 +440,20 @@ class Rule {
 }
 
 class LetterGrade {
-    static _percentage = {
-        "A+": 100,
-        "A": 95,
-        "A-": 90,
-        "B+": 85,
-        "B": 80,
-        "B-": 75,
-        "C+": 70,
-        "C": 65,
-        "C-": 60,
-        "D+": 55,
-        "D": 50,
-        "F": 0
-    };
+    // static _percentage = {
+    //     "A+": 100,
+    //     "A": 95,
+    //     "A-": 90,
+    //     "B+": 85,
+    //     "B": 80,
+    //     "B-": 75,
+    //     "C+": 70,
+    //     "C": 65,
+    //     "C-": 60,
+    //     "D+": 55,
+    //     "D": 50,
+    //     "F": 0
+    // };
 
     static max(letterGrade1, letterGrade2) {
         let percentage1 = LetterGrade._percentage[letterGrade1];
@@ -468,6 +469,20 @@ class LetterGrade {
         return LetterGrade._percentage[letterGrade];
     }
 }
+LetterGrade._percentage = {
+    "A+": 100,
+    "A": 95,
+    "A-": 90,
+    "B+": 85,
+    "B": 80,
+    "B-": 75,
+    "C+": 70,
+    "C": 65,
+    "C-": 60,
+    "D+": 55,
+    "D": 50,
+    "F": 0
+};
 
 Course.add({
     title: "PHIL 279",
