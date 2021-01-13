@@ -3,6 +3,15 @@
 class Course {
     // static list = [];
 
+    title;
+    code;
+    components;
+    units;
+    componentsGrades;
+    countTotal;
+    countTotalComponentsGrades;
+    rules;
+
     static add(object) {
         Course.list.push(new Course(object));
     }
@@ -410,6 +419,11 @@ Course.list = [];
 
 class Rule {
     static _nextId = 0;
+
+    id;
+    grade;
+    total;
+    _requirements;
 
     constructor(obj) {
         this.grade = obj.grade ? obj.grade : "F";
