@@ -2,6 +2,23 @@
 
 $(document).ready(() => {
 
+    try {
+        Course;
+    } catch (error) {
+        $(".header").append(`
+            <section class="not-support hero has-text-centered">
+                <div class="hero-body">
+                    <div class="container">
+                        <p><i class="material-icons">warning</i></p>
+                        <p class="has-text-weight-semibold">Seems like your browser does not support, sadly.</p>
+                        <p class="has-text-weight-semibold">Try with other browsers if you're on Safari.</p>
+                        <p class="has-text-weight-light">Well, this project meets a browser compatibility issue... Contributions are welcome!</p>
+                    </div>
+                </div>
+            </section>
+        `);
+    }
+
     $(".choices-grade .choice").click(function (e) {
         // Read data from DOM
         let courseCode = $(this).closest(".course").attr("course");

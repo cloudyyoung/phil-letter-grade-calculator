@@ -14,11 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
 <body>
-    <section class="hero">
+    <section class="hero header">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">
@@ -34,14 +33,6 @@
     <div class="tabs course-select is-centered is-toggle is-toggle-rounded is-toggle-rounded-seperate">
         <ul></ul>
     </div>
-
-    <script>
-        let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        if (isSafari) {
-            $("script").addAttr("type", "text/babel");
-            $("script").addAttr("data-type", "module");
-        }
-    </script>
 
     <script src="course.js"></script>
     <script src="index.js"></script>
