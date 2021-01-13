@@ -253,7 +253,7 @@ class Course {
                             <!- Tentative Grade ->
                             <div class="card is-shadowless letter-grade tentative-letter-grade">
                                 <div class="card-content">
-                                    <p class="title is-2 grade">A+</p>
+                                    <h2 class="title is-2 grade">A+</h2>
                                     <p class="subtitle">Tentative Letter Grade</p>
                                     <p class="description">
                                         This is your tentative letter grade, and also the maximum grade you can potentially get, based on your current completed activities.<br>
@@ -265,7 +265,7 @@ class Course {
                             <!- Achieved Grade ->
                             <div class="card is-shadowless letter-grade achieved-letter-grade">
                                 <div class="card-content">
-                                    <p class="title is-2 grade">F</p>
+                                    <h2 class="title is-2 grade">F</h2>
                                     <p class="subtitle">Achieved Letter Grade</p>
                                     <p class="description">
                                         This is the letter grade you have already achieved, your final grade will never be lower than this grade. <br>
@@ -277,7 +277,7 @@ class Course {
                             <!- Disclaimer ->
                             <div class="card is-shadowless disclaimer">
                                 <div class="card-content">
-                                    <p class="title is-2"></p>
+                                    <h2 class="title is-2"></h2>
                                     <p class="subtitle"></p>
                                     <p class="description">
                                         <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlapse, your final letter grade is locked to this grade, regardless of any incompleted activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
