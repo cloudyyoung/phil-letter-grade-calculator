@@ -11,7 +11,7 @@ $(document).ready(() => {
                     <div class="container">
                         <p><i class="material-icons">warning</i></p>
                         <p class="has-text-weight-semibold">Seems like your browser does not support, sadly.</p>
-                        <p class="has-text-weight-semibold">Try Google Chrome, Microsoft Edge on Chromium or Firefox.</p>
+                        <p class="has-text-weight-semibold">Try the latest Google Chrome, Microsoft Edge on Chromium or Firefox.</p>
                         <p class="has-text-weight-light">Well, this project meets a browser compatibility issue... Contributions are welcome!</p>
                     </div>
                 </div>
