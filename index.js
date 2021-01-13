@@ -1,3 +1,5 @@
+'use strict';
+
 $(document).ready(() => {
 
     $(".choices-grade .choice").click(function (e) {
