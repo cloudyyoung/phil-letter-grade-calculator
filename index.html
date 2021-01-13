@@ -39,6 +39,7 @@
         let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         if (isSafari) {
             $("script").addAttr("type", "text/babel");
+            $("script").addAttr("data-type", "module");
         }
     </script>
 
