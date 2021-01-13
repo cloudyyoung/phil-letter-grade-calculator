@@ -1,18 +1,11 @@
 'use strict';
 
 class Course {
-    static list = [];
-
-    title;
-    code;
-    components;
-    units;
-    componentsGrades;
-    countTotal;
-    countTotalComponentsGrades;
-    rules;
 
     static add(object) {
+        if (!Course.list) {
+            Course.list = [];
+        }
         Course.list.push(new Course(object));
     }
 
@@ -417,14 +410,11 @@ class Course {
 }
 
 class Rule {
-    static _nextId = 0;
-
-    id;
-    grade;
-    total;
-    _requirements;
 
     constructor(obj) {
+        if (!Rule._nextId) {
+            Rule._nextId = 0;
+        }
         this.grade = obj.grade ? obj.grade : "F";
         this.total = obj.total ? obj.total : 0;
         this._requirements = obj.requirements ? obj.requirements : {};
@@ -453,21 +443,6 @@ class Rule {
 }
 
 class LetterGrade {
-    static _percentage = {
-        "A+": 100,
-        "A": 95,
-        "A-": 90,
-        "B+": 85,
-        "B": 80,
-        "B-": 75,
-        "C+": 70,
-        "C": 65,
-        "C-": 60,
-        "D+": 55,
-        "D": 50,
-        "F": 0
-    };
-
     static max(letterGrade1, letterGrade2) {
         let percentage1 = LetterGrade._percentage[letterGrade1];
         let percentage2 = LetterGrade._percentage[letterGrade2];
@@ -479,7 +454,21 @@ class LetterGrade {
     }
 
     static getPercentage(letterGrade) {
-        return LetterGrade._percentage[letterGrade];
+        let percentage = {
+            "A+": 100,
+            "A": 95,
+            "A-": 90,
+            "B+": 85,
+            "B": 80,
+            "B-": 75,
+            "C+": 70,
+            "C": 65,
+            "C-": 60,
+            "D+": 55,
+            "D": 50,
+            "F": 0
+        };
+        return percentage[letterGrade];
     }
 }
 
