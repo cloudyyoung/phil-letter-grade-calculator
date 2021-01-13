@@ -444,8 +444,8 @@ class Rule {
 
 class LetterGrade {
     static max(letterGrade1, letterGrade2) {
-        let percentage1 = this.getPercentage(letterGrade1);
-        let percentage2 = this.getPercentage(letterGrade2);
+        let percentage1 = LetterGrade.getPercentage(letterGrade1);
+        let percentage2 = LetterGrade.getPercentage(letterGrade2);
         if (percentage1 >= percentage2) {
             return letterGrade1;
         } else {
