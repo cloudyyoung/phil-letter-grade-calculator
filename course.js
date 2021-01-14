@@ -234,7 +234,7 @@ class Course {
                             <div class="table-container">
                                 <table class="table is-hoverable is-fullwidth letter-grade">
                                     <thead>
-                                        <tr>
+                                        <tr class="has-text-left">
                                             <th><abbr title="Letter Grade">Grade</abbr></th>
                                             ${tableHead}
                                             <th class="${this.countTotal ? "" : "is-hidden"}">Total</th>
