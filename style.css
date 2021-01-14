@@ -61,9 +61,14 @@ html, body{
     transition: all 0.3s ease-out;
 }
 
-.activity:hover,
 .activity.active{
     opacity: 1;
+}
+
+@media (hover: hover) {
+    .activity:hover{
+        opacity: 1;
+    }
 }
 
 .activity .choices-grade{
@@ -79,14 +84,16 @@ html, body{
     transition: all 0.25s ease-out;
 }
 
-.activity .choices-grade .choice:hover, 
 .activity .choices-grade .choice.checked{
-    background:var(--primary-color-hover);
+    background:var(--primary-color-selected);
     color: var(--primary-color);
 }
 
-.activity .choices-grade .choice.checked{
-    background: var(--primary-color-selected);
+@media (hover: hover) {
+    .activity .choices-grade .choice:hover{
+        background:var(--primary-color-hover);
+        color: var(--primary-color);
+    }
 }
 
 .material-text{

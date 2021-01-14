@@ -109,7 +109,7 @@ class Course {
 
         // Build course html
         let courseHtml = `
-            <div class="course ${this.code} is-hidden" course="${this.code}" id="${this.code}">
+            <div class="course ${this.code} is-hidden" course="${this.code}">
                 <section class="section">
                     <div class="container">
                         <div class="columns components is-multiline">
