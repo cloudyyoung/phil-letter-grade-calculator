@@ -119,7 +119,7 @@ class Course {
         this.components.forEach((component) => {
             let componentHtml = `
                 <!-- ${component.title} -->
-                <div class="column ${component.code} ${this.componentsGrades.length >= 4 ? "is-half-tablet" : "is-one-third-tablet"} is-one-third-desktop">
+                <div class="column ${component.code} is-half-tablet is-one-third-desktop">
                     <h5 class="title is-5">${component.title}</h5>
             `;
 
