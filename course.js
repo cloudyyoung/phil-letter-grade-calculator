@@ -119,7 +119,7 @@ class Course {
         this.components.forEach((component) => {
             let componentHtml = `
                 <!-- ${component.title} -->
-                <div class="column ${component.code} is-one-third-widescreen is-half-tablet">
+                <div class="column ${component.code} ${this.componentsGrades.length >= 4 ? "is-half-tablet" : "is-one-third-tablet"} is-one-third-desktop">
                     <h5 class="title is-5">${component.title}</h5>
             `;
 
@@ -227,8 +227,8 @@ class Course {
                 <section class="section">
                     <div class="container">
 
-                    <div class="columns">
-                        <div class="column is-8">
+                    <div class="columns is-desktop">
+                        <div class="column is-8-desktop is-full-tablet">
                             
                             <!-- Letter Grade Table -->
                             <div class="table-container">
@@ -248,42 +248,51 @@ class Course {
 
                         </div>
 
-                        <div class="column">
+                        <div class="column is-4-desktop is-full-tablet">
+                            <div class="columns is-multiline">
 
-                            <!- Tentative Grade ->
-                            <div class="card is-shadowless letter-grade tentative-letter-grade">
-                                <div class="card-content">
-                                    <h2 class="title is-2 grade">A+</h2>
-                                    <p class="subtitle">Tentative Letter Grade</p>
-                                    <p class="description">
-                                        This is your tentative letter grade, and also the maximum grade you can potentially get, based on your current completed activities.<br>
-                                        It assumes all the incompleted activities are going to be completed with the highest mark.
-                                    </p>
+                                <div class="column is-4-tablet is-full-desktop">
+                                    <!- Tentative Grade ->
+                                    <div class="card is-shadowless letter-grade tentative-letter-grade">
+                                        <div class="card-content">
+                                            <h2 class="title is-2 grade">A+</h2>
+                                            <p class="subtitle">Tentative Letter Grade</p>
+                                            <p class="description">
+                                                This is your tentative letter grade, and also the maximum grade you can potentially get, based on your current completed activities.<br>
+                                                It assumes all the incompleted activities are going to be completed with the highest mark.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!- Achieved Grade ->
-                            <div class="card is-shadowless letter-grade achieved-letter-grade">
-                                <div class="card-content">
-                                    <h2 class="title is-2 grade">F</h2>
-                                    <p class="subtitle">Achieved Letter Grade</p>
-                                    <p class="description">
-                                        This is the letter grade you have already achieved, your final grade will never be lower than this grade. <br>
-                                        If you stop completing any activities at this point, then this will be your final letter grade by the end of course.
-                                    </p>
+                                <div class="column is-4-tablet is-full-desktop">
+                                    <!- Achieved Grade ->
+                                    <div class="card is-shadowless letter-grade achieved-letter-grade">
+                                        <div class="card-content">
+                                            <h2 class="title is-2 grade">F</h2>
+                                            <p class="subtitle">Achieved Letter Grade</p>
+                                            <p class="description">
+                                                This is the letter grade you have already achieved, your final grade will never be lower than this grade. <br>
+                                                If you stop completing any activities at this point, then this will be your final letter grade by the end of course.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!- Disclaimer ->
-                            <div class="card is-shadowless disclaimer">
-                                <div class="card-content">
-                                    <h2 class="title is-2"></h2>
-                                    <p class="subtitle"></p>
-                                    <p class="description">
-                                        <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlapse, your final letter grade is locked to this grade, regardless of any incompleted activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
-                                        <i class="material-icons">info</i> The calculator only provides a general reference of your grade, please subject to your professor.
-                                    </p>
+                                <div class="column is-4-tablet is-full-desktop">
+                                    <!- Disclaimer ->
+                                    <div class="card is-shadowless disclaimer">
+                                        <div class="card-content">
+                                            <h2 class="title is-2"></h2>
+                                            <p class="subtitle"></p>
+                                            <p class="description">
+                                                <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlapse, your final letter grade is locked to this grade, regardless of any incompleted activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
+                                                <i class="material-icons">info</i> The calculator only provides a general reference of your grade, please subject to your professor.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
 
                         </div>
