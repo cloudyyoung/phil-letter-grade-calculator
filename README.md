@@ -1,4 +1,4 @@
 # phil-letter-grade-calculator
-A letter grade calculator for PHIL 279 &amp; 379 in Winter 2021
+A letter grade calculator for PHIL 279 &amp; 379 - University of Calgary
 
 Contributions are welcomed!!! 
