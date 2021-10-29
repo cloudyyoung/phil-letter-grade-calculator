@@ -537,21 +537,19 @@ Course.add({
         { title: "Incomplete", code: "incomplete", icon: "remove", worth: 0 },
     ],
     rules: [
-        { grade: "A+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 9 }, "challenge-problem": { "M": 3, "E": 3 }, "group-work": { "submit": 5 } } },
-        { grade: "A", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 5 } } },
-        { grade: "A-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } } },
+        { grade: "A+", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 8, "E": 7 }, "challenge-problem": { "M": 3, "E": 2 }, "group-work": { "submit": 10 } } },
+        { grade: "A", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 8, "E": 6 }, "challenge-problem": { "M": 3, "E": 1 }, "group-work": { "submit": 8 } } },
+        { grade: "A-", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 5 }, "challenge-problem": { "M": 2 }, "group-work": { "submit": 8 } } },
 
-        { grade: "B+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 10, "E": 5 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 4 } } },
-        { grade: "B+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 3 }, "group-work": { "submit": 4 } } },
-        { grade: "B", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 4 } } },
-        { grade: "B-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 8, "E": 1 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 3 } } },
+        { grade: "B+", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 3 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 8 } } },
+        { grade: "B", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7, "E": 1 },  "group-work": { "submit": 7 } } },
+        { grade: "B-", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7 }, "group-work": { "submit": 7 } } },
 
-        { grade: "C+", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 8, "E": 1 }, "group-work": { "submit": 3 } } },
-        { grade: "C+", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 3 } } },
-        { grade: "C", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 }, "group-work": { "submit": 3 } } },
-        { grade: "C-", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 } } },
+        { grade: "C+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 6 }, "group-work": { "submit": 6 } } },
+        { grade: "C", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 5 }, "group-work": { "submit": 6 } } },
+        { grade: "C-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 4 }, "group-work": { "submit": 5 }  } },
 
-        { grade: "D+", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 5 }, "basic-problem": { "M": 6 } } },
-        { grade: "D", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 5 }, "basic-problem": { "R": 5, "M": 3 } } },
+        { grade: "D+", requirements: { "quiz": { "complete": 6 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "submit": 4 }  } },
+        { grade: "D", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "submit": 3 }  } },
     ]
 });
