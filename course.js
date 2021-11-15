@@ -272,7 +272,7 @@ class Course {
                                             <h2 class="title is-2 grade">F</h2>
                                             <p class="subtitle">Achieved Letter Grade</p>
                                             <p class="description">
-                                                This is the letter grade you have already achieved, your final grade will never be lower than this grade. <br>
+                                                This is the letter grade you have already achieved. Your final grade will not be lower than this grade. <br>
                                                 If you stop completing any activities at this point, then this will be your final letter grade by the end of course.
                                             </p>
                                         </div>
@@ -286,8 +286,8 @@ class Course {
                                             <h2 class="title is-2"></h2>
                                             <p class="subtitle"></p>
                                             <p class="description">
-                                                <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlapse, your final letter grade is locked to this grade, regardless of any incompleted activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
-                                                <i class="material-icons">info</i> The calculator only provides a general reference of your grade, please subject to your professor.
+                                                <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlap, your final letter grade is locked to this grade, regardless of any incomplete activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
+                                                <i class="material-icons">info</i> The calculator only provides a general reference. Please consult your instructor.
                                             </p>
                                         </div>
                                     </div>
