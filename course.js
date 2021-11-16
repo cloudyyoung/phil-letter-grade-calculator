@@ -272,7 +272,7 @@ class Course {
                                             <h2 class="title is-2 grade">F</h2>
                                             <p class="subtitle">Achieved Letter Grade</p>
                                             <p class="description">
-                                                This is the letter grade you have already achieved, your final grade will never be lower than this grade. <br>
+                                                This is the letter grade you have already achieved. Your final grade will not be lower than this grade. <br>
                                                 If you stop completing any activities at this point, then this will be your final letter grade by the end of course.
                                             </p>
                                         </div>
@@ -286,8 +286,8 @@ class Course {
                                             <h2 class="title is-2"></h2>
                                             <p class="subtitle"></p>
                                             <p class="description">
-                                                <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlapse, your final letter grade is locked to this grade, regardless of any incompleted activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
-                                                <i class="material-icons">info</i> The calculator only provides a general reference of your grade, please subject to your professor.
+                                                <i class="material-icons">swap_vertical_circle</i> When your tentative and achieved letter grade overlap, your final letter grade is locked to this grade, regardless of any incomplete activities. In this case, if you wish to achieve a higher grade, you should improve the grades of your completed activities.<br><br>
+                                                <i class="material-icons">info</i> The calculator only provides a general reference. Please consult your instructor.
                                             </p>
                                         </div>
                                     </div>
@@ -518,9 +518,9 @@ Course.add({
     components: [
         { title: "Quiz", code: "quiz", componentsGrades: ["incomplete", "complete"] },
         { title: "Weekly Test", code: "weekly-test", componentsGrades: ["incomplete", "pass"] },
-        { title: "Basic Problem", code: "basic-problem", componentsGrades: ["N", "R", "M", "E"] },
-        { title: "Challenge Problem", code: "challenge-problem", units: 4, componentsGrades: ["N", "R", "M", "E"] },
-        { title: "Group Work", code: "group-work", units: 5, componentsGrades: ["incomplete", "submit"] }, // override default units 10 to 5
+        { title: "Basic Problem", code: "basic-problem", units: 8, componentsGrades: ["N", "R", "M", "E"] },
+        { title: "Challenge Problem", code: "challenge-problem", units: 3, componentsGrades: ["N", "R", "M", "E"] },
+        { title: "Group Work", code: "group-work", units: 12, componentsGrades: ["incomplete", "credit"] }, // override default units 10 to 12
     ],
     units: 10, // the number of units/amount for each component
     componentsGrades: [
@@ -533,23 +533,23 @@ Course.add({
         // Extra item grades
         { title: "Pass", code: "pass", icon: "done", worth: 1 },
         { title: "Complete", code: "complete", icon: "done", worth: 1 },
-        { title: "Submit", code: "submit", icon: "done", worth: 1 },
+        { title: "Credit", code: "credit", icon: "done", worth: 1 },
         { title: "Incomplete", code: "incomplete", icon: "remove", worth: 0 },
     ],
     rules: [
-        { grade: "A+", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 8, "E": 7 }, "challenge-problem": { "M": 3, "E": 2 }, "group-work": { "submit": 10 } } },
-        { grade: "A", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 8, "E": 6 }, "challenge-problem": { "M": 3, "E": 1 }, "group-work": { "submit": 8 } } },
-        { grade: "A-", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 5 }, "challenge-problem": { "M": 2 }, "group-work": { "submit": 8 } } },
+        { grade: "A+", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 8, "E": 7 }, "challenge-problem": { "M": 3, "E": 2 }, "group-work": { "credit": 10 } } },
+        { grade: "A", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 8, "E": 6 }, "challenge-problem": { "M": 3, "E": 1 }, "group-work": { "credit": 8 } } },
+        { grade: "A-", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 5 }, "challenge-problem": { "M": 2 }, "group-work": { "credit": 8 } } },
 
-        { grade: "B+", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 3 }, "challenge-problem": { "M": 1 }, "group-work": { "submit": 8 } } },
-        { grade: "B", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7, "E": 1 },  "group-work": { "submit": 7 } } },
-        { grade: "B-", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7 }, "group-work": { "submit": 7 } } },
+        { grade: "B+", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 3 }, "challenge-problem": { "M": 1 }, "group-work": { "credit": 8 } } },
+        { grade: "B", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7, "E": 1 },  "group-work": { "credit": 7 } } },
+        { grade: "B-", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7 }, "group-work": { "credit": 7 } } },
 
-        { grade: "C+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 6 }, "group-work": { "submit": 6 } } },
-        { grade: "C", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 5 }, "group-work": { "submit": 6 } } },
-        { grade: "C-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 4 }, "group-work": { "submit": 5 }  } },
+        { grade: "C+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 6 }, "group-work": { "credit": 6 } } },
+        { grade: "C", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 5 }, "group-work": { "credit": 6 } } },
+        { grade: "C-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 5 }  } },
 
-        { grade: "D+", requirements: { "quiz": { "complete": 6 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "submit": 4 }  } },
-        { grade: "D", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "submit": 3 }  } },
+        { grade: "D+", requirements: { "quiz": { "complete": 6 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 4 }  } },
+        { grade: "D", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 3 }  } },
     ]
 });
