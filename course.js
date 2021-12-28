@@ -137,11 +137,17 @@ class Course {
                 `;
 
                 component.componentsGrades.forEach((activityGrade) => {
+                    let componentGrade = ``;
+                    if (activityGrade.code) {
+                        componentGrade = `<i class="material-icons">${activityGrade.icon}</i>`;   
+                    } else if (activityGrade.letter) {
+                        componentGrade = `<i class="material-text">${activityGrade.text}</i>`;
+                    }
+
                     componentHtml += `
                         <!-- ${activityGrade.title} -->
                         <a class="button is-white is-rounded choice ${activityGrade.code}" title="${activityGrade.title}" grade="${activityGrade.code}">
-                            <i class="material-icons ${activityGrade.icon ? "" : "is-hidden"}">${activityGrade.icon}</i>
-                            <i class="material-text ${activityGrade.text ? "" : "is-hidden"}">${activityGrade.text}</i>
+                            ${componentGrade}
                         </a>
                     `;
                 });
@@ -161,7 +167,7 @@ class Course {
 
                         <div class="notification local-storage-info">
                             <i class="material-icons">info</i>
-                            Your grades for activities will be saved in local storage in your browser, they are not shared with anyone.
+                            Your grades for activities are saved in the local storage in your browser, they are not shared with anyone.
                             When coming back, your grades for activities should still be here.
                             However, you will lose them if you clear your browser cache, and your cleaning software might do it for you.
                         </div>
@@ -176,6 +182,11 @@ class Course {
             tableHead += `<th>${component.title}</th>`;
         });
 
+        if (this.countTotal) {
+            tableHead += `<th>Total</th>`;
+        }
+
+
         // Build letter grade table body
         let tableBody = ``;
         this.rules.forEach((rule) => {
@@ -188,12 +199,19 @@ class Course {
                 if (rule.hasRequirements(component.code)) {
                     $.each(rule.getRequirement(component.code), (activityGradeCode, amount) => {
                         let activityGrade = this._getComponentsGrade(activityGradeCode);
+                        
+                        let componentGrade = ``;
+                        if (activityGrade.icon) {
+                            componentGrade = `<i class="material-icons">${activityGrade.icon}</i>`;    
+                        }else if (activityGrade.text) {
+                            componentGrade = `<i class="material-text">${activityGrade.text}</i>`;
+                        }
+
                         tableBody += `
                             <div class="column is-narrow">
                                 <div class="columns is-mobile" title="${activityGrade.title}: ${amount}" style="width: 60px;">
                                     <div class="column is-1">
-                                        <i class="material-icons ${activityGrade.icon ? "" : "is-hidden"}">${activityGrade.icon}</i>
-                                        <i class="material-text ${activityGrade.text ? "" : "is-hidden"}">${activityGrade.text}</i>
+                                        ${componentGrade}
                                     </div>
                                     <div class="column is-narrow"><span>${amount}</span></div>
                                 </div>
@@ -237,7 +255,6 @@ class Course {
                                         <tr>
                                             <th><abbr title="Letter Grade">Grade</abbr></th>
                                             ${tableHead}
-                                            <th class="${this.countTotal ? "" : "is-hidden"}">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -542,14 +559,14 @@ Course.add({
         { grade: "A-", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 5 }, "challenge-problem": { "M": 2 }, "group-work": { "credit": 8 } } },
 
         { grade: "B+", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 3 }, "challenge-problem": { "M": 1 }, "group-work": { "credit": 8 } } },
-        { grade: "B", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7, "E": 1 },  "group-work": { "credit": 7 } } },
+        { grade: "B", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7, "E": 1 }, "group-work": { "credit": 7 } } },
         { grade: "B-", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7 }, "group-work": { "credit": 7 } } },
 
         { grade: "C+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 6 }, "group-work": { "credit": 6 } } },
         { grade: "C", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 5 }, "group-work": { "credit": 6 } } },
-        { grade: "C-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 5 }  } },
+        { grade: "C-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 5 } } },
 
-        { grade: "D+", requirements: { "quiz": { "complete": 6 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 4 }  } },
-        { grade: "D", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 3 }  } },
+        { grade: "D+", requirements: { "quiz": { "complete": 6 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 4 } } },
+        { grade: "D", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 3 } } },
     ]
 });
