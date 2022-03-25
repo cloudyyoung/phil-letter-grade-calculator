@@ -138,9 +138,9 @@ class Course {
 
                 component.componentsGrades.forEach((activityGrade) => {
                     let componentGrade = ``;
-                    if (activityGrade.code) {
+                    if (activityGrade.icon) {
                         componentGrade = `<i class="material-icons">${activityGrade.icon}</i>`;   
-                    } else if (activityGrade.letter) {
+                    } else if (activityGrade.text) {
                         componentGrade = `<i class="material-text">${activityGrade.text}</i>`;
                     }
 
