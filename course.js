@@ -535,9 +535,8 @@ Course.add({
     components: [
         { title: "Quiz", code: "quiz", componentsGrades: ["incomplete", "complete"] },
         { title: "Weekly Test", code: "weekly-test", componentsGrades: ["incomplete", "pass"] },
-        { title: "Basic Problem", code: "basic-problem", units: 8, componentsGrades: ["N", "R", "M", "E"] },
-        { title: "Challenge Problem", code: "challenge-problem", units: 3, componentsGrades: ["N", "R", "M", "E"] },
-        { title: "Group Work", code: "group-work", units: 12, componentsGrades: ["incomplete", "credit"] }, // override default units 10 to 12
+        { title: "Proof Problem", code: "basic-problem", componentsGrades: ["N", "R", "M", "E"] },
+        { title: "Group Work", code: "group-work", componentsGrades: ["incomplete", "credit"] },
     ],
     units: 10, // the number of units/amount for each component
     componentsGrades: [
@@ -554,19 +553,19 @@ Course.add({
         { title: "Incomplete", code: "incomplete", icon: "remove", worth: 0 },
     ],
     rules: [
-        { grade: "A+", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 8, "E": 7 }, "challenge-problem": { "M": 3, "E": 2 }, "group-work": { "credit": 10 } } },
-        { grade: "A", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 8, "E": 6 }, "challenge-problem": { "M": 3, "E": 1 }, "group-work": { "credit": 8 } } },
-        { grade: "A-", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 5 }, "challenge-problem": { "M": 2 }, "group-work": { "credit": 8 } } },
+        { grade: "A+", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 8 }, "group-work": { "credit": 8 } } },
+        { grade: "A", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 10, "E": 8 }, "group-work": { "credit": 6 } } },
+        { grade: "A-", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 9, "E": 5 }, "group-work": { "credit": 6 } } },
 
-        { grade: "B+", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 10 }, "basic-problem": { "M": 7, "E": 3 }, "challenge-problem": { "M": 1 }, "group-work": { "credit": 8 } } },
-        { grade: "B", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7, "E": 1 }, "group-work": { "credit": 7 } } },
-        { grade: "B-", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 7 }, "group-work": { "credit": 7 } } },
+        { grade: "B+", requirements: { "quiz": { "complete": 10 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 8, "E": 3 }, "group-work": { "credit": 6 } } },
+        { grade: "B", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 8, "E": 2 }, "group-work": { "credit": 5 } } },
+        { grade: "B-", requirements: { "quiz": { "complete": 8 }, "weekly-test": { "pass": 9 }, "basic-problem": { "M": 8 }, "group-work": { "credit": 5 } } },
 
-        { grade: "C+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 6 }, "group-work": { "credit": 6 } } },
-        { grade: "C", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 5 }, "group-work": { "credit": 6 } } },
-        { grade: "C-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 5 } } },
+        { grade: "C+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 7 }, "group-work": { "credit": 5 } } },
+        { grade: "C", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 8 }, "basic-problem": { "M": 7 }, "group-work": { "credit": 4 } } },
+        { grade: "C-", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 7 }, "basic-problem": { "M": 6 }, "group-work": { "credit": 4 } } },
 
-        { grade: "D+", requirements: { "quiz": { "complete": 6 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 4 } } },
-        { grade: "D", requirements: { "quiz": { "complete": 5 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 4 }, "group-work": { "credit": 3 } } },
+        { grade: "D+", requirements: { "quiz": { "complete": 7 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 6 }, "group-work": { "credit": 4 } } },
+        { grade: "D", requirements: { "quiz": { "complete": 6 }, "weekly-test": { "pass": 6 }, "basic-problem": { "M": 6 } } },
     ]
 });
